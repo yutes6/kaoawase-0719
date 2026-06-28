@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>貞本家 × 太田家 顔合わせ</title>
+
+<!-- ===== Google Fonts ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   カラーパレット / 基本設定
+   ========================================================= */
+:root{
+  --base:        #F8F6F1; /* オフホワイト */
+  --text:        #2C2C2C; /* ディープチャコール */
+  --accent:      #3D6B5A; /* 深いグリーン（和） */
+  --accent-soft: #4f7e6c;
+  --sub:         #C4714A; /* テラコッタ（子どもページ限定） */
+  --sub-soft:    #d98a64;
+  --border:      #E0DDD8; /* ライトグレー */
+  --card-bg:     #FFFFFF;
+  --shadow:      0 6px 24px rgba(44,44,44,.06);
+
+  --serif: "Noto Serif JP", serif;
+  --sans:  "Noto Sans JP", sans-serif;
+  --eng:   "Cormorant Garamond", serif;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ scroll-behavior:smooth; }
+html, body{ overflow-x:hidden; }
+
+body{
+  font-family:var(--sans);
+  color:var(--text);
+  background:var(--base);
+  font-weight:400;
+  line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:.02em;
+}
+
+img{ max-width:100%; display:block; }
+
+/* =========================================================
+   パスワード画面
+   ========================================================= */
+#gate{
+  position:fixed; inset:0; z-index:100;
+  background:var(--base);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:24px; text-align:center;
+}
+#gate .gate-eng{
+  font-family:var(--eng); font-size:1.4rem; letter-spacing:.18em;
+  color:var(--accent); margin-bottom:10px;
+}
+#gate h1{
+  font-family:var(--serif); font-weight:500; font-size:1.35rem;
+  letter-spacing:.12em; margin-bottom:6px;
+}
+#gate p{ font-size:.82rem; color:#8a857d; margin-bottom:32px; }
+.gate-box{ width:100%; max-width:320px; }
+.gate-box input{
+  width:100%; padding:14px 16px; font-size:1rem; font-family:var(--sans);
+  border:1px solid var(--border); border-radius:10px; background:#fff;
+  text-align:center; letter-spacing:.1em; color:var(--text); outline:none;
+  transition:border-color .2s;
+}
+.gate-box input:focus{ border-color:var(--accent); }
+.gate-box button{
+  width:100%; margin-top:14px; padding:14px; font-size:.95rem; font-family:var(--sans);
+  font-weight:500; letter-spacing:.1em; color:#fff; background:var(--accent);
+  border:none; border-radius:10px; cursor:pointer; transition:background .2s;
+}
+.gate-box button:hover{ background:var(--accent-soft); }
+#gate-error{
+  color:var(--sub); font-size:.82rem; margin-top:14px; min-height:1.2em;
+  opacity:0; transition:opacity .2s;
+}
+#gate-error.show{ opacity:1; }
+.gate-ornament{
+  font-family:var(--eng); font-style:italic; font-size:.95rem;
+  color:#b5b0a7; margin-top:40px; letter-spacing:.1em;
+}
+
+/* =========================================================
+   コンテンツ全体（最初は非表示 → フェードイン）
+   ========================================================= */
+#content{ display:none; opacity:0; transition:opacity 1.1s ease; }
+#content.visible{ opacity:1; }
+
+.wrap{ max-width:680px; margin:0 auto; padding-left:22px; padding-right:22px; }
+
+section{ padding-top:88px; padding-bottom:88px; }
+
+/* セクション間の区切り（ダイヤ装飾つきの細いライン） */
+.divider{
+  position:relative; width:78%; max-width:440px; height:1px;
+  background:var(--border); margin:0 auto;
+}
+.divider::after{
+  content:""; position:absolute; left:50%; top:50%;
+  width:7px; height:7px; background:var(--base);
+  border:1px solid var(--accent); border-radius:1px;
+  transform:translate(-50%,-50%) rotate(45deg);
+}
+/* wide はパート間の大きな区切り（同デザインを踏襲） */
+.divider.wide{ width:84%; max-width:480px; }
+
+/* 共通：英字ラベル */
+.eyebrow{
+  font-family:var(--eng); font-size:1.05rem; letter-spacing:.22em;
+  color:var(--accent); text-transform:uppercase; text-align:center;
+  margin-bottom:8px;
+}
+.section-title{
+  font-family:var(--serif); font-weight:500; font-size:1.4rem;
+  letter-spacing:.1em; text-align:center; margin-bottom:38px;
+}
+
+/* 写真プレースホルダー */
+.photo-ph{
+  background:linear-gradient(135deg,#eceae4 0%,#e3e0d9 100%);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  color:#b7b2a8; font-family:var(--eng); font-size:.95rem; letter-spacing:.15em;
+  position:relative; overflow:hidden;
+}
+.photo-ph::after{
+  content:"PHOTO"; opacity:.7;
+}
+/* 枠の中に<img>を入れると、その枠いっぱいに写真が表示される */
+.photo-ph img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; z-index:1;
+}
+.photo-ph:has(img)::after{ display:none; }
+.photo-ph.circle{ border-radius:50%; }
+.photo-ph.square{ aspect-ratio:1/1; border-radius:14px; }
+.photo-ph.portrait{ aspect-ratio:3/4; border-radius:14px; }
+.photo-ph.hero{ aspect-ratio:4/3; border-radius:18px; }
+
+/* =========================================================
+   ヒーロー
+   ========================================================= */
+#hero{
+  padding:0 0 60px; text-align:center;
+}
+.hero-movie-wrap{ padding:0; width:100vw; margin-left:calc(50% - 50vw); }
+.hero-movie{
+  width:100%; display:block;
+  aspect-ratio:16/9; object-fit:cover; object-position:center 42%;
+  background:#e3e0d9;
+}
+.hero-visual{ padding:36px 22px 0; }
+.hero-visual .photo-ph{ max-width:430px; margin:0 auto; }
+.hero-copy{ padding:40px 22px 0; }
+.hero-families{
+  font-family:var(--serif); font-weight:500; letter-spacing:.14em;
+  font-size:1.7rem; line-height:1.5;
+}
+.hero-families .x{
+  font-family:var(--eng); font-style:italic; color:var(--accent);
+  font-size:1.5rem; margin:0 .3em; font-weight:500;
+}
+.hero-sub{
+  font-family:var(--serif); font-size:1.05rem; letter-spacing:.2em;
+  margin-top:14px; color:#555;
+}
+.hero-date{
+  font-family:var(--eng); font-size:1.25rem; letter-spacing:.16em;
+  color:var(--accent); margin-top:22px;
+}
+.hero-time{
+  font-family:var(--eng); font-size:1.05rem; letter-spacing:.18em;
+  color:var(--accent); margin-top:4px;
+}
+.hero-place{ font-size:.85rem; color:#8a857d; margin-top:10px; letter-spacing:.1em; }
+
+/* =========================================================
+   ごあいさつ
+   ========================================================= */
+#greeting{ text-align:center; }
+.greeting-text{
+  font-family:var(--serif); font-weight:400; font-size:1.02rem;
+  line-height:2.4; letter-spacing:.08em; color:#3a3a3a;
+}
+.greeting-sign{
+  font-family:var(--serif); font-size:1.05rem; letter-spacing:.14em;
+  margin-top:28px; color:var(--accent);
+}
+
+/* =========================================================
+   おふたり 自己紹介
+   ========================================================= */
+.person{
+  display:flex; flex-direction:column; gap:22px; align-items:center;
+  margin-bottom:10px;
+}
+.person .photo-ph.portrait{ width:200px; }
+.person-head{ text-align:center; }
+.person-name{
+  font-family:var(--serif); font-weight:500; font-size:1.45rem; letter-spacing:.1em;
+}
+.person-name .reading{
+  display:block; font-family:var(--eng); font-style:italic;
+  font-size:1rem; color:var(--accent); letter-spacing:.14em; margin-top:4px;
+}
+.person-role{
+  display:inline-block; margin-top:10px; font-size:.72rem; letter-spacing:.18em;
+  color:var(--accent); border:1px solid var(--accent); border-radius:20px;
+  padding:3px 14px;
+}
+
+/* プロフィール表 */
+.profile{
+  width:100%; border-collapse:collapse; margin-top:4px;
+  background:var(--card-bg); border-radius:14px; overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.profile th, .profile td{
+  text-align:left; vertical-align:top; padding:13px 16px; font-size:.88rem;
+  border-bottom:1px solid var(--border); line-height:1.7;
+}
+.profile tr:last-child th, .profile tr:last-child td{ border-bottom:none; }
+.profile th{
+  width:34%; font-weight:500; color:var(--accent); letter-spacing:.06em;
+  background:rgba(61,107,90,.04); white-space:nowrap;
+}
+.ph-note{ color:#b7b2a8; font-style:normal; }
+
+/* =========================================================
+   なれそめ / タイムライン
+   ========================================================= */
+#story .story-lead{
+  font-size:.92rem; line-height:2.1; color:#3a3a3a;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:14px; padding:22px 22px; box-shadow:var(--shadow);
+  margin-bottom:40px;
+}
+.timeline{ position:relative; padding-left:30px; }
+.timeline::before{
+  content:""; position:absolute; left:7px; top:6px; bottom:6px;
+  width:2px; background:var(--border);
+}
+.tl-item{ position:relative; padding-bottom:26px; }
+.tl-item:last-child{ padding-bottom:0; }
+.tl-item::before{
+  content:""; position:absolute; left:-30px; top:4px;
+  width:14px; height:14px; border-radius:50%;
+  background:var(--base); border:3px solid var(--accent);
+}
+.tl-item.future::before{ border-color:var(--sub); }
+.tl-date{
+  font-family:var(--eng); font-size:1.05rem; letter-spacing:.12em;
+  color:var(--accent); font-weight:600;
+}
+.tl-item.future .tl-date{ color:var(--sub); }
+.tl-event{ font-size:.95rem; letter-spacing:.04em; margin-top:2px; }
+
+/* =========================================================
+   家族紹介
+   ========================================================= */
+.family-section{ }
+.family-heading{
+  font-family:var(--serif); font-weight:500; font-size:1.55rem;
+  letter-spacing:.12em; text-align:center;
+}
+.family-heading .eng{
+  display:block; font-family:var(--eng); font-style:italic; font-size:1rem;
+  color:var(--accent); letter-spacing:.2em; margin-top:6px; font-weight:500;
+}
+.family-grid{
+  display:grid; grid-template-columns:1fr; gap:26px; margin-top:34px;
+}
+
+/* 縦長家族カード */
+.fcard{
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:18px; overflow:hidden; box-shadow:var(--shadow);
+}
+.fcard .photo-ph{ aspect-ratio:4/5; border:none; border-bottom:1px solid var(--border); }
+.fcard-body{ padding:20px 20px 22px; }
+.fcard-name{
+  font-family:var(--serif); font-weight:500; font-size:1.2rem; letter-spacing:.08em;
+}
+.fcard-name .reading{
+  font-family:var(--eng); font-style:italic; font-size:.9rem;
+  color:var(--accent); letter-spacing:.1em; margin-left:8px;
+}
+.fcard-rel{
+  display:inline-block; margin-top:8px; margin-bottom:14px;
+  font-size:.68rem; letter-spacing:.16em; color:#fff; background:var(--accent);
+  border-radius:20px; padding:3px 13px;
+}
+.fcard dl{ display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:.85rem; }
+.fcard dt{ color:var(--accent); font-weight:500; white-space:nowrap; letter-spacing:.04em; }
+.fcard dd{ line-height:1.7; }
+
+/* 子どもカード（テラコッタ・ポップ） */
+.fcard.kid{ border-color:var(--sub-soft); }
+.fcard.kid .photo-ph{
+  background:linear-gradient(135deg,#f3ddd1 0%,#eecab6 100%);
+  color:#cf9b80; border-bottom-color:var(--sub-soft);
+}
+.fcard.kid .fcard-name .reading{ color:var(--sub); }
+.fcard.kid .fcard-rel{ background:var(--sub); }
+.fcard.kid dt{ color:var(--sub); }
+.fcard.kid .fcard-body{
+  background:linear-gradient(180deg,rgba(196,113,74,.04) 0%,rgba(255,255,255,0) 60%);
+}
+
+/* 両家の共通点コーナー */
+.common{
+  background:var(--accent); color:#fff; border-radius:18px;
+  padding:30px 24px; text-align:center; margin-top:8px;
+}
+.common .eyebrow{ color:#cfe2da; }
+.common-title{
+  font-family:var(--serif); font-weight:500; font-size:1.25rem;
+  letter-spacing:.1em; margin-bottom:18px;
+}
+.common-list{
+  display:flex; flex-wrap:wrap; gap:10px; justify-content:center; list-style:none;
+}
+.common-list li{
+  background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3);
+  border-radius:22px; padding:7px 16px; font-size:.85rem; letter-spacing:.04em;
+}
+.common-note{ font-size:.8rem; color:#cfe2da; margin-top:18px; line-height:1.8; }
+
+/* =========================================================
+   当日の流れ / 今後の流れ
+   ========================================================= */
+.flow-list{ list-style:none; }
+.flow-list li{
+  display:flex; gap:18px; align-items:flex-start;
+  padding:16px 0; border-bottom:1px solid var(--border);
+}
+.flow-list li:last-child{ border-bottom:none; }
+.flow-time{
+  font-family:var(--eng); font-size:1.05rem; letter-spacing:.1em;
+  color:var(--accent); font-weight:600; white-space:nowrap; min-width:70px;
+}
+.flow-desc{ font-size:.92rem; line-height:1.7; }
+.flow-desc .ph-note{ font-size:.82rem; }
+
+.future-flow{
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:18px; box-shadow:var(--shadow); padding:8px 24px;
+}
+
+/* 馴れ初め：プロポーズ写真（タイムライン内） */
+.tl-photo{ margin:14px 0 4px; }
+
+/* =========================================================
+   思い出ギャラリー
+   ========================================================= */
+/* メイン写真（大きく1枚） */
+.gallery-main{ margin:0 0 18px; }
+.gmain{
+  width:100%; aspect-ratio:3/2; border-radius:16px; object-fit:cover; display:block;
+}
+.gallery-main figcaption{
+  text-align:center; font-size:.85rem; letter-spacing:.06em; color:var(--accent);
+  margin-top:12px; font-family:var(--serif);
+}
+
+/* サブ見出し（ふたりの思い出／家族との思い出） */
+.gallery-subtitle{
+  font-family:var(--serif); font-weight:500; font-size:1.02rem; letter-spacing:.12em;
+  color:var(--text); text-align:center; margin:38px 0 18px; position:relative;
+}
+.gallery-subtitle::after{
+  content:""; display:block; width:28px; height:1px; background:var(--accent);
+  margin:10px auto 0; opacity:.6;
+}
+
+/* タイル（横幅を自動で埋める） */
+.gallery-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px;
+}
+.gallery-grid figure{ margin:0; }
+.gallery-grid figure.wide{ grid-column:1 / -1; }
+.gtile{
+  width:100%; aspect-ratio:1/1; border-radius:12px; object-fit:cover; display:block;
+}
+.gwide{
+  width:100%; aspect-ratio:16/9; border-radius:12px; object-fit:cover; display:block;
+}
+.gallery-grid figcaption{
+  text-align:center; font-size:.78rem; letter-spacing:.04em; color:#6f6a62;
+  margin-top:8px; line-height:1.5;
+}
+
+/* =========================================================
+   フッター
+   ========================================================= */
+footer{
+  text-align:center; padding:56px 22px 64px; background:var(--accent);
+  color:#fff; margin-top:20px;
+}
+footer .f-names{
+  font-family:var(--serif); font-weight:500; font-size:1.25rem; letter-spacing:.16em;
+}
+footer .f-date{
+  font-family:var(--eng); font-size:1rem; letter-spacing:.18em;
+  color:#cfe2da; margin-top:12px;
+}
+footer .f-message{
+  font-family:var(--serif); font-weight:300; font-size:.84rem; line-height:2.2;
+  letter-spacing:.02em; color:#eef4f1; margin-top:30px;
+}
+footer .f-heart{ font-family:var(--eng); font-style:italic; color:#cfe2da; margin-top:30px; font-size:.9rem; }
+
+/* =========================================================
+   レスポンシブ（PC）
+   ========================================================= */
+@media (min-width:640px){
+  .hero-families{ font-size:2.1rem; }
+  .section-title{ font-size:1.6rem; }
+  .family-grid{ grid-template-columns:1fr 1fr; }
+  .person{ flex-direction:row; align-items:flex-start; gap:30px; }
+  .person .photo-ph.portrait{ width:210px; flex-shrink:0; }
+  .person .person-detail{ flex:1; }
+  .person-head{ text-align:left; }
+}
+
+/* スクロール出現アニメーション */
+.reveal{ opacity:0; transform:translateY(18px); transition:opacity .8s ease, transform .8s ease; }
+.reveal.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion:reduce){
+  .reveal{ opacity:1; transform:none; transition:none; }
+  #content{ transition:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     3-0. パスワード画面
+     ========================================================= -->
+<div id="gate">
+  <div class="gate-eng">Sadamoto &amp; Ota</div>
+  <h1>両家顔合わせ</h1>
+  <p>合言葉を入力してください</p>
+  <div class="gate-box">
+    <input type="password" id="gate-input" placeholder="パスワード" autocomplete="off" inputmode="text">
+    <button id="gate-btn">ひらく</button>
+    <div id="gate-error">パスワードが違うようです</div>
+  </div>
+  <div class="gate-ornament">Welcome to our families</div>
+</div>
+
+
+<!-- =========================================================
+     メインコンテンツ
+     ========================================================= -->
+<div id="content">
+
+  <!-- ===== 3-1. ヒーロー（メインビジュアル＋トップ） ===== -->
+  <header id="hero">
+    <div class="hero-movie-wrap reveal">
+      <!-- 動画: ヘッダー動画をここに入れる -->
+      <video class="hero-movie" src="photos/headermovie.mp4" autoplay muted loop playsinline preload="auto"></video>
+    </div>
+    <div class="hero-visual reveal">
+      <!-- 写真: ふたりのメインビジュアル画像をここに入れる -->
+      <div class="photo-ph hero"><img src="photos/header.jpg" alt="貞本家と太田家"></div>
+    </div>
+    <div class="hero-copy reveal">
+      <div class="hero-families">貞本家<span class="x">&amp;</span>太田家</div>
+      <div class="hero-sub">顔合わせ食事会</div>
+      <!-- 日時・場所を入れる -->
+      <div class="hero-date">2026 . 07 . 19</div>
+      <div class="hero-time">12:00 &ndash; 14:00</div>
+      <div class="hero-place">＠ グランドプリンスホテル広島</div>
+    </div>
+  </header>
+
+  <div class="divider wide"></div>
+
+  <!-- ===== 3-2. ごあいさつ ===== -->
+  <section id="greeting" class="wrap reveal">
+    <div class="eyebrow">Greeting</div>
+    <h2 class="section-title">ごあいさつ</h2>
+    <p class="greeting-text">
+      本日はお集まりいただき<br>ありがとうございます<br><br>
+      両家の皆さまが<br>この場で初めてお会いになることを<br>
+      心より嬉しく思います<br><br>
+      本日はどうぞよろしくお願いいたします
+    </p>
+    <p class="greeting-sign">貞本裕飛 ・ 太田穂乃里</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== 3-3. おふたりのページ ===== -->
+  <section id="couple" class="wrap">
+    <div class="eyebrow reveal">The Two of Us</div>
+    <h2 class="section-title reveal">ふたりのこと</h2>
+
+    <!-- 貞本 裕飛 -->
+    <div class="person reveal" style="margin-bottom:48px;">
+      <!-- 写真: 裕飛の写真をここに入れる -->
+      <div class="photo-ph portrait"><img src="photos/profile-yuto.jpg" alt="貞本 裕飛"></div>
+      <div class="person-detail">
+        <div class="person-head">
+          <div class="person-name">貞本 裕飛<span class="reading">Yuto</span></div>
+          <span class="person-role">新郎</span>
+        </div>
+        <table class="profile">
+          <tr><th>生年月日</th><td>1994年7月8日（31歳）</td></tr>
+          <tr><th>出身地</th><td>広島県広島市</td></tr>
+          <tr><th>居住地</th><td>東京都（広島 → メルボルン → 東京）</td></tr>
+          <tr><th>趣味</th><td>野球（草野球＆プロ野球観戦）、テニス、スノーボード、テントサウナ、ゲーム、宇宙（相対性理論・宇宙物理学）</td></tr>
+          <tr><th>好きな食べ物</th><td>ラザニア、カルボナーラ、寿司、フライドポテト</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 太田 穂乃里 -->
+    <div class="person reveal">
+      <!-- 写真: 穂乃里の写真をここに入れる -->
+      <div class="photo-ph portrait"><img src="photos/profile-honori1.jpg" alt="太田 穂乃里"></div>
+      <div class="person-detail">
+        <div class="person-head">
+          <div class="person-name">太田 穂乃里<span class="reading">Honori</span></div>
+          <span class="person-role">新婦</span>
+        </div>
+        <table class="profile">
+          <tr><th>生年月日</th><td>1993年10月6日（32歳）</td></tr>
+          <tr><th>出身地</th><td>東京都調布市</td></tr>
+          <tr><th>居住地</th><td>東京都（調布 → ロサンゼルス → 世田谷ほか）</td></tr>
+          <tr><th>趣味</th><td>サウナ、料理、旅行（自然）</td></tr>
+          <tr><th>好きな食べ物</th><td>母の餃子、ゆうとくんのラザニア、蟹、カレー、ラーメン</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== なれそめ / タイムライン ===== -->
+  <section id="story" class="wrap">
+    <div class="eyebrow reveal">Our Story</div>
+    <h2 class="section-title reveal">馴れ初め</h2>
+    <p class="story-lead reveal">
+      裕飛の会社の同期と穂乃里のアルバイト時代の友人が共通の友人で、食事の場で出会いました。
+      友人グループ10名ほどで、テントサウナ・バーベキュー・お祭り・旅行などを通じて交流を深めていきました。
+    </p>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-date">2024.03.02</div>
+        <div class="tl-event">はじめて出会った日</div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-date">2024.07.14</div>
+        <div class="tl-event">交際スタート</div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-date">2025.06.07</div>
+        <div class="tl-event">同居スタート</div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-date">2026.01.23</div>
+        <div class="tl-event">プロポーズ</div>
+        <!-- 写真: プロポーズの写真 -->
+        <figure class="tl-photo">
+          <div class="photo-ph gmain"><img src="photos/propose.jpg" alt="プロポーズ"></div>
+        </figure>
+      </div>
+      <div class="tl-item future reveal">
+        <div class="tl-date">2027.01.23</div>
+        <div class="tl-event">入籍予定</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider wide"></div>
+
+  <!-- ===== 3-4. 貞本家 家族紹介 ===== -->
+  <section id="sadamoto" class="wrap family-section">
+    <h2 class="family-heading reveal">貞本家<span class="eng">The Sadamoto Family</span></h2>
+    <div class="family-grid">
+
+      <!-- 澄子｜祖母 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 澄子の写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-sumiko.jpg" alt="貞本 澄子"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 澄子<span class="reading">Sumiko</span></div>
+          <span class="fcard-rel">祖母</span>
+          <dl>
+            <dt>生年月日</dt><dd>1944年11月8日</dd>
+            <dt>出身地</dt><dd>広島県安芸郡府中町</dd>
+            <dt>居住地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>ビール、サスペンス、編み物</dd>
+            <dt>好きな食べ物</dt><dd><span class="ph-note"><!-- 好きな食べ物を入れる -->（後日追加）</span></dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- 徹｜父 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 徹の写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-toru.jpg" alt="貞本 徹"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 徹<span class="reading">Toru</span></div>
+          <span class="fcard-rel">父</span>
+          <dl>
+            <dt>生年月日</dt><dd>1970年9月17日</dd>
+            <dt>出身地</dt><dd>徳島県鳴門市</dd>
+            <dt>居住地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>ゴルフ、釣り、ウェイクボード</dd>
+            <dt>好きな食べ物</dt><dd><span class="ph-note"><!-- 好きな食べ物を入れる -->（後日追加）</span></dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- リー｜母 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 リーの写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-lee.jpg" alt="貞本 リー"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 リー<span class="reading">Lee</span></div>
+          <span class="fcard-rel">母</span>
+          <dl>
+            <dt>生年月日</dt><dd>1983年1月8日</dd>
+            <dt>出身地</dt><dd>オーストラリア タンワース</dd>
+            <dt>居住地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>マラソン、ジャザサイズ、園芸、裁縫</dd>
+            <dt>好きな食べ物</dt><dd><span class="ph-note"><!-- 好きな食べ物を入れる -->（後日追加）</span></dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- 六｜妹 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 六の写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-roku.jpg" alt="貞本 六"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 六<span class="reading">Roku</span></div>
+          <span class="fcard-rel">妹</span>
+          <dl>
+            <dt>生年月日</dt><dd>2015年4月3日</dd>
+            <dt>出身地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>ゴルフ、シール、スクイーズ、メイクアップ</dd>
+            <dt>好きな食べ物</dt><dd><span class="ph-note"><!-- 好きな食べ物を入れる -->（後日追加）</span></dd>
+            <dt>将来の夢</dt><dd><span class="ph-note"><!-- 将来の夢を入れる -->（後日追加）</span></dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- 川｜妹 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 川の写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-sen.jpg" alt="貞本 川"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 川<span class="reading">Sen</span></div>
+          <span class="fcard-rel">妹</span>
+          <dl>
+            <dt>生年月日</dt><dd>2017年7月20日</dd>
+            <dt>出身地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>空手、バイオリン、野球、テレビ、お笑い（ノンスタイル）、上り棒</dd>
+            <dt>好きな食べ物</dt><dd><span class="ph-note"><!-- 好きな食べ物を入れる -->（後日追加）</span></dd>
+            <dt>将来の夢</dt><dd><span class="ph-note"><!-- 将来の夢を入れる -->（後日追加）</span></dd>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="divider wide"></div>
+
+  <!-- ===== 3-5. 太田家 家族紹介 ===== -->
+  <section id="ota" class="wrap family-section">
+    <h2 class="family-heading reveal">太田家<span class="eng">The Ota Family</span></h2>
+    <div class="family-grid">
+
+      <!-- 雄一｜父 -->
+      <article class="fcard reveal">
+        <!-- 写真: 太田 雄一の写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-yuichi.jpg" alt="太田 雄一"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">太田 雄一<span class="reading">Yuichi</span></div>
+          <span class="fcard-rel">父</span>
+          <dl>
+            <dt>生年月日</dt><dd>1960年4月25日</dd>
+            <dt>出身地</dt><dd>神奈川県横浜市</dd>
+            <dt>居住地</dt><dd>東京都稲城市</dd>
+            <dt>趣味</dt><dd>AIデザイン、スポーツ</dd>
+            <dt>好きな食べ物</dt><dd><span class="ph-note"><!-- 好きな食べ物を入れる -->（後日追加）</span></dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- 由貴子｜母 -->
+      <article class="fcard reveal">
+        <!-- 写真: 太田 由貴子の写真をここに入れる（上を固定して拡大＝下のケーキのプレートを除外） -->
+        <div class="photo-ph"><img src="photos/profile-yukiko.jpg" alt="太田 由貴子" style="transform:scale(1.28);transform-origin:36% top;"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">太田 由貴子<span class="reading">Yukiko</span></div>
+          <span class="fcard-rel">母</span>
+          <dl>
+            <dt>生年月日</dt><dd>1961年1月31日</dd>
+            <dt>出身地</dt><dd>静岡県沼津市</dd>
+            <dt>居住地</dt><dd>東京都稲城市</dd>
+            <dt>趣味</dt><dd>ゴルフ、スポーツ観戦、女子旅</dd>
+            <dt>好きな食べ物</dt><dd><span class="ph-note"><!-- 好きな食べ物を入れる -->（後日追加）</span></dd>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="divider wide"></div>
+
+  <!-- ===== 思い出ギャラリー ===== -->
+  <section id="gallery" class="wrap">
+    <div class="eyebrow reveal">Memories</div>
+    <h2 class="section-title reveal">思い出</h2>
+
+    <!-- ▼ メイン写真（大きく1枚） ============================ -->
+    <figure class="gallery-main reveal">
+      <div class="photo-ph gmain"><img src="photos/gallery-yutohonori.jpg" alt="ふたりの思い出"></div>
+      <!-- コメント不要なら下の<figcaption>行を削除 -->
+      <figcaption><!-- メイン写真の説明を入れる -->ふたりの思い出</figcaption>
+    </figure>
+
+    <!-- ▼ ふたりの思い出（ハワイ→ニセコ→金沢→長野の順） ====== -->
+    <h3 class="gallery-subtitle reveal">ふたりの思い出</h3>
+    <div class="gallery-grid">
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori1.jpg" alt="ふたりの思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-hawaii.jpg" alt="ハワイ"></div>
+        <figcaption>ハワイ</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-hawaii2.jpg" alt="ハワイ"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-hawaii4.jpg" alt="ハワイ"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-niseko2.jpg" alt="ニセコ"></div>
+        <figcaption>ニセコ</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-niseko3.jpg" alt="ニセコ"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-kanazawa2.jpg" alt="金沢"></div>
+        <figcaption>金沢</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-kanazawa3.jpg" alt="金沢"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-nagano.jpg" alt="長野"></div>
+        <figcaption>長野</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-nagano2.jpg" alt="長野"></div>
+      </figure>
+    </div>
+
+    <!-- ▼ 家族との思い出（貞本家 sfam → 太田家 ofam の順／キャプションなし） -->
+    <h3 class="gallery-subtitle reveal">家族との思い出</h3>
+    <div class="gallery-grid">
+      <figure class="reveal wide">
+        <div class="photo-ph gwide"><img src="photos/gallery-sfam.jpg" alt="家族との思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-sfam2.jpg" alt="家族との思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-ofam.jpg" alt="家族との思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-ofam3.jpg" alt="家族との思い出" style="transform:scale(1.2);transform-origin:8% center;"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-ofam4.jpg" alt="家族との思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-ofam5.jpg" alt="家族との思い出"></div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===== 3-7. フッター ===== -->
+  <footer>
+    <div class="f-names">貞本裕飛 ・ 太田穂乃里</div>
+    <div class="f-date">2026 . 07 . 19</div>
+    <p class="f-message">
+      本日はお忙しい中<br>私たちのためにお集まりいただき<br>ありがとうございました<br><br>
+      これからもお互いを思いやり 支え合いながら<br>笑顔あふれる家庭を築いてまいります<br><br>
+      今後とも温かく見守っていただけますと幸いです<br>末永くよろしくお願いいたします
+    </p>
+    <div class="f-heart">Thank you</div>
+  </footer>
+
+</div><!-- /#content -->
+
+
+<script>
+/* =========================================================
+   パスワード認証
+   ========================================================= */
+// ▼▼▼ パスワードをここに設定してください ▼▼▼
+const PASSWORD = "20260719";   // 例: const PASSWORD = "0708";
+// ▲▲▲ パスワードをここに設定してください ▲▲▲
+
+const gate     = document.getElementById('gate');
+const content  = document.getElementById('content');
+const input    = document.getElementById('gate-input');
+const btn      = document.getElementById('gate-btn');
+const errorMsg = document.getElementById('gate-error');
+
+function unlock(){
+  if(input.value === PASSWORD){
+    gate.style.transition = 'opacity .6s ease';
+    gate.style.opacity = '0';
+    setTimeout(function(){
+      gate.style.display = 'none';
+      content.style.display = 'block';
+      // 次のフレームでフェードイン
+      requestAnimationFrame(function(){
+        content.classList.add('visible');
+        initReveal();
+      });
+    }, 600);
+  } else {
+    errorMsg.classList.add('show');
+    input.value = '';
+    input.focus();
+  }
+}
+
+btn.addEventListener('click', unlock);
+input.addEventListener('keydown', function(e){
+  if(e.key === 'Enter') unlock();
+});
+window.addEventListener('load', function(){ input.focus(); });
+
+/* =========================================================
+   スクロール出現アニメーション
+   ========================================================= */
+function initReveal(){
+  const items = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){
+    items.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+  items.forEach(function(el){ io.observe(el); });
+}
+</script>
+
+</body>
+</html>
