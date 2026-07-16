@@ -2,1402 +2,874 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<meta name="format-detection" content="telephone=no">
-<title>両家顔合わせ食事会｜2026.07.19</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='%23A8874F'/></svg>">
+<title>貞本家 × 太田家 顔合わせ</title>
+
+<!-- ===== Google Fonts ===== -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
 <style>
-/* ============================================================
-   両家顔合わせ食事会 2026.07.19
-   Chic Cinematic — ivory × ink × brass / GSAP ScrollTrigger
-   ※ JSが無効・GSAP未読込でも全コンテンツが見える設計
-   ============================================================ */
+/* =========================================================
+   カラーパレット / 基本設定
+   ========================================================= */
 :root{
-  --ink:#23262E;
-  --ink-soft:#585B63;
-  --bg:#F5F2EB;
-  --paper:#FFFFFF;
-  --gold:#A8874F;
-  --gold-soft:#C3A878;
-  --line:rgba(35,38,46,.14);
-  --line-soft:rgba(35,38,46,.08);
-  --stroke:rgba(35,38,46,.12);
-  --shadow:0 24px 50px -20px rgba(35,38,46,.18);
-  --font-jp:'Zen Kaku Gothic New',"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
-  --font-min:'Shippori Mincho',"Hiragino Mincho ProN","Yu Mincho",serif;
-  --font-en:'Cormorant Garamond',Georgia,serif;
+  --base:        #F8F6F1; /* オフホワイト */
+  --text:        #2C2C2C; /* ディープチャコール */
+  --accent:      #3D6B5A; /* 深いグリーン（和） */
+  --accent-soft: #4f7e6c;
+  --sub:         #C4714A; /* テラコッタ（子どもページ限定） */
+  --sub-soft:    #d98a64;
+  --border:      #E0DDD8; /* ライトグレー */
+  --card-bg:     #FFFFFF;
+  --shadow:      0 6px 24px rgba(44,44,44,.06);
+
+  --serif: "Noto Serif JP", serif;
+  --sans:  "Noto Sans JP", sans-serif;
+  --eng:   "Cormorant Garamond", serif;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:auto;-webkit-text-size-adjust:100%;overflow-x:clip;}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ scroll-behavior:smooth; }
+html, body{ overflow-x:hidden; }
+
 body{
-  font-family:var(--font-jp);
+  font-family:var(--sans);
+  color:var(--text);
+  background:var(--base);
   font-weight:400;
-  color:var(--ink);
-  background:var(--bg);
-  line-height:2;
-  letter-spacing:.04em;
-}
-body.locked{overflow:hidden;height:100dvh;}
-img{display:block;max-width:100%;}
-section{position:relative;overflow:hidden;}
-
-/* ---- grain ---- */
-.grain{
-  position:fixed;inset:-50%;width:200%;height:200%;
-  pointer-events:none;z-index:50;opacity:.4;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.04'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:.02em;
 }
 
-/* ---- scroll progress ---- */
-#pbar{
-  position:fixed;top:0;left:0;right:0;height:2px;z-index:60;
-  background:var(--gold);
-  transform:scaleX(0);transform-origin:left center;
-  pointer-events:none;
-}
+img{ max-width:100%; display:block; }
 
-/* ============================================================
-   PASSWORD GATE
-   ============================================================ */
+/* =========================================================
+   パスワード画面
+   ========================================================= */
 #gate{
-  position:fixed;inset:0;z-index:1000;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--bg);
-  transition:opacity 1.1s cubic-bezier(.6,0,.2,1),visibility 1.1s;
-  padding:24px;
+  position:fixed; inset:0; z-index:100;
+  background:var(--base);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:24px; text-align:center;
 }
-#gate.open{opacity:0;visibility:hidden;pointer-events:none;}
-.gate-inner{width:100%;max-width:380px;text-align:center;}
-.gate-en{
-  font-family:var(--font-en);
-  font-size:15px;font-weight:500;
-  letter-spacing:.42em;text-indent:.42em;
-  color:var(--gold);
-  margin-bottom:18px;
+#gate .gate-eng{
+  font-family:var(--eng); font-size:1.4rem; letter-spacing:.18em;
+  color:var(--accent); margin-bottom:10px;
 }
-.gate-title{
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(26px,7vw,34px);
-  line-height:1.6;letter-spacing:.14em;
-  margin-bottom:14px;
+#gate h1{
+  font-family:var(--serif); font-weight:500; font-size:1.35rem;
+  letter-spacing:.12em; margin-bottom:6px;
 }
-.gate-rule{width:44px;height:1px;background:var(--gold);margin:0 auto 44px;}
-.gate-note{font-size:12.5px;letter-spacing:.14em;color:var(--ink-soft);margin-bottom:26px;}
-.gate-form{display:flex;flex-direction:column;gap:22px;align-items:center;}
-.gate-input{
-  font-family:var(--font-en);
-  font-size:22px;text-align:center;letter-spacing:.34em;text-indent:.34em;
-  padding:8px 4px;width:230px;
-  border:none;border-bottom:1px solid var(--ink);
-  background:transparent;color:var(--ink);
-  border-radius:0;outline:none;
-  transition:border-color .3s;
+#gate p{ font-size:.82rem; color:#8a857d; margin-bottom:32px; }
+.gate-box{ width:100%; max-width:320px; }
+.gate-box input{
+  width:100%; padding:14px 16px; font-size:1rem; font-family:var(--sans);
+  border:1px solid var(--border); border-radius:10px; background:#fff;
+  text-align:center; letter-spacing:.1em; color:var(--text); outline:none;
+  transition:border-color .2s;
 }
-.gate-input::placeholder{color:rgba(35,38,46,.25);}
-.gate-input:focus{border-bottom-color:var(--gold);}
-.gate-btn{
-  font-family:var(--font-jp);font-weight:500;font-size:13px;letter-spacing:.4em;text-indent:.4em;
-  padding:15px 0;width:230px;
-  border:1px solid var(--ink);
-  background:var(--ink);color:var(--bg);
-  cursor:pointer;border-radius:2px;
-  transition:background .3s,color .3s;
+.gate-box input:focus{ border-color:var(--accent); }
+.gate-box button{
+  width:100%; margin-top:14px; padding:14px; font-size:.95rem; font-family:var(--sans);
+  font-weight:500; letter-spacing:.1em; color:#fff; background:var(--accent);
+  border:none; border-radius:10px; cursor:pointer; transition:background .2s;
 }
-.gate-btn:hover{background:transparent;color:var(--ink);}
-.gate-error{
-  color:#A4574A;font-size:12px;letter-spacing:.1em;
-  margin-top:20px;min-height:1.6em;opacity:0;transition:opacity .3s;
+.gate-box button:hover{ background:var(--accent-soft); }
+#gate-error{
+  color:var(--sub); font-size:.82rem; margin-top:14px; min-height:1.2em;
+  opacity:0; transition:opacity .2s;
 }
-.gate-error.show{opacity:1;}
-.gate-inner.shake{animation:shake .5s;}
-@keyframes shake{
-  0%,100%{transform:translateX(0)}
-  20%{transform:translateX(-8px)}40%{transform:translateX(8px)}
-  60%{transform:translateX(-5px)}80%{transform:translateX(5px)}
+#gate-error.show{ opacity:1; }
+.gate-ornament{
+  font-family:var(--eng); font-style:italic; font-size:.95rem;
+  color:#b5b0a7; margin-top:40px; letter-spacing:.1em;
 }
 
-/* ============================================================
-   SHARED
-   ============================================================ */
-.wrap{width:100%;max-width:1060px;margin:0 auto;padding:0 24px;}
-.wrap-narrow{max-width:720px;}
+/* =========================================================
+   コンテンツ全体（最初は非表示 → フェードイン）
+   ========================================================= */
+#content{ display:none; opacity:0; transition:opacity 1.1s ease; }
+#content.visible{ opacity:1; }
 
-.sec-head{text-align:center;margin-bottom:clamp(44px,8vw,72px);position:relative;z-index:2;}
-.sec-en{
-  font-family:var(--font-en);
-  font-size:13px;font-weight:500;
-  letter-spacing:.42em;text-indent:.42em;
-  color:var(--gold);
-  margin-bottom:14px;
-}
-.sec-jp{
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(26px,6.4vw,40px);
-  line-height:1.5;letter-spacing:.16em;
-  overflow:hidden;
-}
-.sec-jp .ch{display:inline-block;}
-.sec-rule{width:44px;height:1px;background:var(--gold);margin:22px auto 0;}
+.wrap{ max-width:680px; margin:0 auto; padding-left:22px; padding-right:22px; }
 
-/* 巨大ゴーストタイポ（スクロール視差で流れる） */
-.ghost{
-  position:absolute;left:50%;top:clamp(-10px,1vw,20px);
-  transform:translateX(-50%);
-  font-family:var(--font-en);font-style:italic;font-weight:600;
-  font-size:clamp(96px,24vw,260px);
-  line-height:1;white-space:nowrap;
-  color:transparent;
-  -webkit-text-stroke:1px var(--stroke);
-  pointer-events:none;user-select:none;
-  z-index:0;
+section{ padding-top:88px; padding-bottom:88px; }
+
+/* セクション間の区切り（ダイヤ装飾つきの細いライン） */
+.divider{
+  position:relative; width:78%; max-width:440px; height:1px;
+  background:var(--border); margin:0 auto;
+}
+.divider::after{
+  content:""; position:absolute; left:50%; top:50%;
+  width:7px; height:7px; background:var(--base);
+  border:1px solid var(--accent); border-radius:1px;
+  transform:translate(-50%,-50%) rotate(45deg);
+}
+/* wide はパート間の大きな区切り（同デザインを踏襲） */
+.divider.wide{ width:84%; max-width:480px; }
+
+/* 共通：英字ラベル */
+.eyebrow{
+  font-family:var(--eng); font-size:1.05rem; letter-spacing:.22em;
+  color:var(--accent); text-transform:uppercase; text-align:center;
+  margin-bottom:8px;
+}
+.section-title{
+  font-family:var(--serif); font-weight:500; font-size:1.4rem;
+  letter-spacing:.1em; text-align:center; margin-bottom:38px;
 }
 
-/* marquee */
-.marquee{
-  overflow:hidden;
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  padding:14px 0;
+/* 写真プレースホルダー */
+.photo-ph{
+  background:linear-gradient(135deg,#eceae4 0%,#e3e0d9 100%);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  color:#b7b2a8; font-family:var(--eng); font-size:.95rem; letter-spacing:.15em;
+  position:relative; overflow:hidden;
 }
-.marquee-track{display:flex;width:max-content;animation:mq 46s linear infinite;}
-.marquee span{
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:15px;letter-spacing:.24em;
-  color:var(--ink-soft);white-space:nowrap;
-  padding:0 14px;display:flex;align-items:center;gap:28px;
+.photo-ph::after{
+  content:"PHOTO"; opacity:.7;
 }
-.marquee span i{font-style:normal;color:var(--gold);font-size:9px;transform:translateY(-1px);}
-@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* 枠の中に<img>を入れると、その枠いっぱいに写真が表示される */
+.photo-ph img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; z-index:1;
+}
+.photo-ph:has(img)::after{ display:none; }
+.photo-ph.circle{ border-radius:50%; }
+.photo-ph.square{ aspect-ratio:1/1; border-radius:14px; }
+.photo-ph.portrait{ aspect-ratio:3/4; border-radius:14px; }
+.photo-ph.hero{ aspect-ratio:4/3; border-radius:18px; }
 
-/* frame */
-.frame{
-  position:relative;overflow:hidden;
-  border-radius:6px;
-  background:#E9E5DC;
+/* =========================================================
+   ヒーロー
+   ========================================================= */
+#hero{
+  padding:0 0 60px; text-align:center;
 }
-.frame img{width:100%;height:100%;object-fit:cover;}
-
-/* ambient orbs */
-.orb{
-  position:absolute;border-radius:50%;pointer-events:none;z-index:0;
-  background:radial-gradient(circle at 40% 35%,rgba(195,168,120,.16),rgba(195,168,120,0) 70%);
-  animation:orbfloat 12s ease-in-out infinite;
+.hero-movie-wrap{ padding:0; width:100vw; margin-left:calc(50% - 50vw); }
+.hero-movie{
+  width:100%; display:block;
+  aspect-ratio:16/9; object-fit:cover; object-position:center 42%;
+  background:#e3e0d9;
 }
-@keyframes orbfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-26px)}}
-
-/* ============================================================
-   HERO
-   ============================================================ */
-.hero{
-  min-height:100vh;min-height:100svh;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:72px 0 96px;
+.hero-visual{ padding:36px 22px 0; }
+.hero-visual .photo-ph{ max-width:430px; margin:0 auto; }
+.hero-copy{ padding:40px 22px 0; }
+.hero-families{
+  font-family:var(--serif); font-weight:500; letter-spacing:.14em;
+  font-size:1.7rem; line-height:1.5;
 }
-@media(max-width:879px){.hero{padding-bottom:140px;}}
-.hero-grid{display:grid;grid-template-columns:1fr;gap:52px;align-items:center;}
-@media(min-width:880px){.hero-grid{grid-template-columns:1.1fr .9fr;gap:40px;}}
-.hero-copy{text-align:center;position:relative;z-index:2;}
-@media(min-width:880px){.hero-copy{text-align:left;}}
-.hero-over{
-  font-family:var(--font-en);
-  font-size:clamp(13px,3.4vw,15px);font-weight:500;
-  letter-spacing:.44em;text-indent:.44em;
-  color:var(--gold);
-  margin-bottom:26px;
+.hero-families .x{
+  font-family:var(--eng); font-style:italic; color:var(--accent);
+  font-size:1.5rem; margin:0 .3em; font-weight:500;
 }
-.hero-fam{
-  font-family:var(--font-min);font-weight:500;
-  font-size:clamp(14px,3.8vw,17px);letter-spacing:.3em;
-  color:var(--ink-soft);
-  margin-bottom:14px;
+.hero-sub{
+  font-family:var(--serif); font-size:1.05rem; letter-spacing:.2em;
+  margin-top:14px; color:#555;
 }
-.hero-title{
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(40px,10.5vw,76px);
-  line-height:1.42;letter-spacing:.1em;
-  margin-bottom:34px;
-}
-.ht-line{display:block;overflow:hidden;}
-.ht-row{display:block;}
 .hero-date{
-  display:flex;align-items:baseline;gap:14px;justify-content:center;
+  font-family:var(--eng); font-size:1.25rem; letter-spacing:.16em;
+  color:var(--accent); margin-top:22px;
+}
+.hero-time{
+  font-family:var(--eng); font-size:1.05rem; letter-spacing:.18em;
+  color:var(--accent); margin-top:4px;
+}
+.hero-place{ font-size:.85rem; color:#8a857d; margin-top:10px; letter-spacing:.1em; }
+
+/* =========================================================
+   ごあいさつ
+   ========================================================= */
+#greeting{ text-align:center; }
+.greeting-text{
+  font-family:var(--serif); font-weight:400; font-size:1.02rem;
+  line-height:2.4; letter-spacing:.08em; color:#3a3a3a;
+}
+.greeting-sign{
+  font-family:var(--serif); font-size:1.05rem; letter-spacing:.14em;
+  margin-top:28px; color:var(--accent);
+}
+
+/* =========================================================
+   おふたり 自己紹介
+   ========================================================= */
+.person{
+  display:flex; flex-direction:column; gap:22px; align-items:center;
   margin-bottom:10px;
 }
-@media(min-width:880px){.hero-date{justify-content:flex-start;}}
-.hero-date .d{
-  font-family:var(--font-en);font-weight:500;
-  font-size:clamp(30px,7.5vw,42px);
-  letter-spacing:.08em;line-height:1.1;
-  color:var(--ink);
+.person .photo-ph.portrait{ width:200px; }
+.person-head{ text-align:center; }
+.person-name{
+  font-family:var(--serif); font-weight:500; font-size:1.45rem; letter-spacing:.1em;
 }
-.hero-date .dow{
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:clamp(15px,4vw,19px);letter-spacing:.2em;
-  color:var(--gold);
+.person-name .reading{
+  display:block; font-family:var(--eng); font-style:italic;
+  font-size:1rem; color:var(--accent); letter-spacing:.14em; margin-top:4px;
 }
-.hero-meta{
-  font-size:clamp(12.5px,3.4vw,14px);font-weight:500;
-  letter-spacing:.16em;color:var(--ink-soft);
+.person-role{
+  display:inline-block; margin-top:10px; font-size:.72rem; letter-spacing:.18em;
+  color:var(--accent); border:1px solid var(--accent); border-radius:20px;
+  padding:3px 14px;
 }
-.hero-meta .sep{color:var(--gold);margin:0 10px;}
-.hero-rule{width:56px;height:1px;background:var(--gold);margin:30px auto 0;transform-origin:left center;}
-@media(min-width:880px){.hero-rule{margin-left:2px;}}
 
-.hero-visual{position:relative;display:flex;justify-content:center;z-index:1;}
-.hv{position:relative;width:min(62vw,280px);}
-@media(min-width:880px){.hv{width:min(28vw,310px);}}
-.hv-frame{
-  aspect-ratio:464/832;
-  border-radius:10px;overflow:hidden;
+/* プロフィール表 */
+.profile{
+  width:100%; border-collapse:collapse; margin-top:4px;
+  background:var(--card-bg); border-radius:14px; overflow:hidden;
   box-shadow:var(--shadow);
-  background:#DFE6E8;
 }
-.hv-frame::after{
-  content:"";position:absolute;inset:0;border-radius:10px;
-  border:1px solid rgba(255,255,255,.5);pointer-events:none;
+.profile th, .profile td{
+  text-align:left; vertical-align:top; padding:13px 16px; font-size:.88rem;
+  border-bottom:1px solid var(--border); line-height:1.7;
 }
-.hv-frame video{width:100%;height:100%;object-fit:cover;}
-.hv-cap{
-  margin-top:16px;text-align:center;
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:13px;letter-spacing:.28em;
-  color:var(--ink-soft);
+.profile tr:last-child th, .profile tr:last-child td{ border-bottom:none; }
+.profile th{
+  width:34%; font-weight:500; color:var(--accent); letter-spacing:.06em;
+  background:rgba(61,107,90,.04); white-space:nowrap;
 }
-.ring{
-  position:absolute;top:-44px;right:-40px;width:110px;height:110px;z-index:2;
-  animation:spin 26s linear infinite;
-}
-@media(max-width:879px){.ring{width:92px;height:92px;top:-36px;right:-24px;}}
-.ring svg{width:100%;height:100%;overflow:visible;}
-.ring text{font-family:var(--font-en);font-size:10.5px;letter-spacing:.32em;fill:var(--gold);}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.ph-note{ color:#b7b2a8; font-style:normal; }
 
-.scroll-cue{
-  position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  font-family:var(--font-en);font-size:10px;letter-spacing:.4em;text-indent:.4em;
-  color:var(--ink-soft);z-index:3;
+/* =========================================================
+   なれそめ / タイムライン
+   ========================================================= */
+#story .story-lead{
+  font-size:.92rem; line-height:2.1; color:#3a3a3a;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:14px; padding:22px 22px; box-shadow:var(--shadow);
+  margin-bottom:40px;
 }
-.scroll-cue::after{
-  content:"";width:1px;height:44px;
-  background:linear-gradient(var(--ink),transparent);
-  animation:cue 2.2s ease-in-out infinite;
+.timeline{ position:relative; padding-left:30px; }
+.timeline::before{
+  content:""; position:absolute; left:7px; top:6px; bottom:6px;
+  width:2px; background:var(--border);
 }
-@keyframes cue{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-
-/* ============================================================
-   GREETING
-   ============================================================ */
-.greeting{padding:clamp(100px,17vw,170px) 0;}
-.greet-txt{
-  text-align:center;
-  font-family:var(--font-min);font-weight:500;
-  font-size:clamp(12.5px,3.4vw,17px);
-  line-height:2.7;letter-spacing:.06em;
-  position:relative;z-index:2;
-}
-.greet-txt+.greet-txt{margin-top:2em;}
-.greet-names{
-  margin-top:3em;text-align:center;
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(15px,4.2vw,18px);letter-spacing:.22em;
-  position:relative;z-index:2;
-}
-
-/* ============================================================
-   MAIN VISUAL（スクロールで全幅に開く）
-   ============================================================ */
-.mainvisual{padding:0 0 clamp(100px,17vw,170px);}
-.mv-clip{overflow:hidden;}
-.mv-clip img{width:100%;aspect-ratio:4/3;object-fit:cover;}
-@media(min-width:880px){.mv-clip img{aspect-ratio:21/10;}}
-.mv-caption{
-  margin-top:26px;text-align:center;
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:clamp(20px,5vw,26px);letter-spacing:.14em;
-  color:var(--ink-soft);
-}
-.mv-caption .amp{color:var(--gold);}
-
-/* ============================================================
-   PROFILE
-   ============================================================ */
-.profile{padding:0 0 clamp(100px,17vw,170px);}
-.duo-grid{display:grid;grid-template-columns:1fr;gap:clamp(36px,7vw,48px);position:relative;z-index:2;}
-@media(min-width:820px){.duo-grid{grid-template-columns:1fr 1fr;align-items:start;}}
-.p-card{
-  background:var(--paper);
-  border:1px solid var(--line-soft);
-  border-radius:10px;
-  box-shadow:var(--shadow);
-  padding:clamp(22px,4.5vw,30px);
-  transition:transform .5s cubic-bezier(.22,.8,.3,1);
-}
-@media(hover:hover){.p-card:hover{transform:translateY(-6px);}}
-@media(min-width:820px){.p-card:nth-child(2){margin-top:64px;}}
-.p-photo{aspect-ratio:4/5;margin-bottom:22px;}
-.p-role{
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:13px;letter-spacing:.3em;color:var(--gold);
-  margin-bottom:6px;
-}
-.p-name{
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(21px,5.4vw,25px);letter-spacing:.16em;
-  margin-bottom:2px;
-}
-.p-kana{font-size:11px;letter-spacing:.3em;color:var(--ink-soft);margin-bottom:20px;}
-
-.dl{border-top:1px solid var(--line-soft);}
-.dl .row{
-  display:grid;grid-template-columns:84px 1fr;gap:14px;
-  padding:10px 2px;
-  border-bottom:1px solid var(--line-soft);
-}
-.dl .dt{
-  font-size:11px;font-weight:700;letter-spacing:.2em;
-  color:var(--gold);padding-top:4px;line-height:1.8;
-}
-.dl .dd{font-size:13px;font-weight:500;line-height:1.9;letter-spacing:.04em;}
-
-/* ============================================================
-   STORY / TIMELINE
-   ============================================================ */
-.story{padding:clamp(100px,17vw,170px) 0;}
-.story-lead{
-  max-width:620px;margin:0 auto clamp(54px,10vw,84px);
-  text-align:center;
-  font-size:clamp(13.5px,3.7vw,15.5px);font-weight:500;
-  line-height:2.4;letter-spacing:.06em;
-  position:relative;z-index:2;
-}
-.tl{position:relative;max-width:600px;margin:0 auto;padding-left:36px;z-index:2;}
-.tl-line{
-  position:absolute;left:5px;top:6px;bottom:6px;width:1px;
-  background:var(--line);transform-origin:top center;
-}
-.tl-item{position:relative;padding-bottom:clamp(36px,7vw,50px);}
-.tl-item:last-child{padding-bottom:0;}
+.tl-item{ position:relative; padding-bottom:26px; }
+.tl-item:last-child{ padding-bottom:0; }
 .tl-item::before{
-  content:"";position:absolute;left:-35px;top:9px;
-  width:11px;height:11px;border-radius:50%;
-  background:var(--gold);
-  box-shadow:0 0 0 4px rgba(168,135,79,.14);
+  content:""; position:absolute; left:-30px; top:4px;
+  width:14px; height:14px; border-radius:50%;
+  background:var(--base); border:3px solid var(--accent);
 }
+.tl-item.future::before{ border-color:var(--sub); }
 .tl-date{
-  font-family:var(--font-en);font-weight:600;
-  font-size:clamp(19px,5vw,23px);letter-spacing:.12em;
-  color:var(--ink);line-height:1.3;margin-bottom:2px;
+  font-family:var(--eng); font-size:1.05rem; letter-spacing:.12em;
+  color:var(--accent); font-weight:600;
 }
-.tl-label{
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(15px,4.2vw,18px);letter-spacing:.14em;
+.tl-item.future .tl-date{ color:var(--sub); }
+.tl-event{ font-size:.95rem; letter-spacing:.04em; margin-top:2px; }
+
+/* =========================================================
+   家族紹介
+   ========================================================= */
+.family-section{ }
+.family-heading{
+  font-family:var(--serif); font-weight:500; font-size:1.55rem;
+  letter-spacing:.12em; text-align:center;
 }
-.tl-item.future::before{
-  background:var(--bg);border:1px solid var(--gold);
-  box-shadow:0 0 0 4px rgba(168,135,79,.1);
+.family-heading .eng{
+  display:block; font-family:var(--eng); font-style:italic; font-size:1rem;
+  color:var(--accent); letter-spacing:.2em; margin-top:6px; font-weight:500;
 }
-.tl-item.future .tl-date,.tl-item.future .tl-label{color:var(--ink-soft);}
-.tl-soon{
-  display:inline-block;margin-left:12px;vertical-align:2px;
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:12px;letter-spacing:.22em;color:var(--gold);
-}
-.tl-photo{position:relative;margin-top:20px;max-width:440px;cursor:pointer;}
-.tl-photo .frame{box-shadow:var(--shadow);}
-.tl-photo img{aspect-ratio:4/3;transition:transform .8s ease;}
-@media(hover:hover){.tl-photo:hover img{transform:scale(1.03);}}
-.tl-photo-cap{
-  margin-top:12px;
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:13px;letter-spacing:.26em;color:var(--gold);
+.family-grid{
+  display:grid; grid-template-columns:1fr; gap:26px; margin-top:34px;
 }
 
-/* ============================================================
-   FAMILY
-   ============================================================ */
-.family{padding:clamp(100px,17vw,170px) 0 0;}
-.fam-grid{display:grid;gap:clamp(24px,5vw,32px);grid-template-columns:1fr;position:relative;z-index:2;}
-@media(min-width:640px){.fam-grid{grid-template-columns:1fr 1fr;}}
-@media(min-width:960px){.fam-grid.cols3{grid-template-columns:1fr 1fr 1fr;}}
-.fam-grid.cols2{max-width:720px;margin:0 auto;}
-.f-card{
-  background:var(--paper);
-  border:1px solid var(--line-soft);
-  border-radius:10px;
-  box-shadow:var(--shadow);
-  padding:clamp(18px,3.6vw,24px);
-  transition:transform .5s cubic-bezier(.22,.8,.3,1);
+/* 縦長家族カード */
+.fcard{
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:18px; overflow:hidden; box-shadow:var(--shadow);
 }
-@media(hover:hover){.f-card:hover{transform:translateY(-6px);}}
-.f-photo{aspect-ratio:4/5;margin-bottom:18px;}
-.f-role{
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:12px;letter-spacing:.28em;color:var(--gold);
-  margin-bottom:4px;
+.fcard .photo-ph{ aspect-ratio:4/5; border:none; border-bottom:1px solid var(--border); }
+.fcard-body{ padding:20px 20px 22px; }
+.fcard-name{
+  font-family:var(--serif); font-weight:500; font-size:1.2rem; letter-spacing:.08em;
 }
-.f-role .jp{
-  font-family:var(--font-jp);font-style:normal;font-weight:700;
-  font-size:11px;letter-spacing:.24em;color:var(--gold);
+.fcard-name .reading{
+  font-family:var(--eng); font-style:italic; font-size:.9rem;
+  color:var(--accent); letter-spacing:.1em; margin-left:8px;
 }
-.f-name{
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(18px,4.6vw,21px);letter-spacing:.16em;
-  margin-bottom:16px;
+.fcard-rel{
+  display:inline-block; margin-top:8px; margin-bottom:14px;
+  font-size:.68rem; letter-spacing:.16em; color:#fff; background:var(--accent);
+  border-radius:20px; padding:3px 13px;
+}
+.fcard dl{ display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:.85rem; }
+.fcard dt{ color:var(--accent); font-weight:500; white-space:nowrap; letter-spacing:.04em; }
+.fcard dd{ line-height:1.7; }
+
+/* 子どもカード（テラコッタ・ポップ） */
+.fcard.kid{ border-color:var(--sub-soft); }
+.fcard.kid .photo-ph{
+  background:linear-gradient(135deg,#f3ddd1 0%,#eecab6 100%);
+  color:#cf9b80; border-bottom-color:var(--sub-soft);
+}
+.fcard.kid .fcard-name .reading{ color:var(--sub); }
+.fcard.kid .fcard-rel{ background:var(--sub); }
+.fcard.kid dt{ color:var(--sub); }
+.fcard.kid .fcard-body{
+  background:linear-gradient(180deg,rgba(196,113,74,.04) 0%,rgba(255,255,255,0) 60%);
 }
 
-/* ============================================================
-   GALLERY（横スクロールシアター＋グリッド）
-   ============================================================ */
-.gallery-head{padding:clamp(100px,17vw,170px) 0 0;}
-.g-sub{
-  display:flex;align-items:center;justify-content:center;gap:20px;
-  margin:0 0 clamp(32px,6vw,44px);
-  position:relative;z-index:2;
+/* 両家の共通点コーナー */
+.common{
+  background:var(--accent); color:#fff; border-radius:18px;
+  padding:30px 24px; text-align:center; margin-top:8px;
 }
-.g-sub::before,.g-sub::after{
-  content:"";height:1px;width:clamp(28px,7vw,60px);background:var(--line);
+.common .eyebrow{ color:#cfe2da; }
+.common-title{
+  font-family:var(--serif); font-weight:500; font-size:1.25rem;
+  letter-spacing:.1em; margin-bottom:18px;
 }
-.g-sub span{
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(16px,4.4vw,19px);letter-spacing:.22em;
+.common-list{
+  display:flex; flex-wrap:wrap; gap:10px; justify-content:center; list-style:none;
+}
+.common-list li{
+  background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3);
+  border-radius:22px; padding:7px 16px; font-size:.85rem; letter-spacing:.04em;
+}
+.common-note{ font-size:.8rem; color:#cfe2da; margin-top:18px; line-height:1.8; }
+
+/* =========================================================
+   当日の流れ / 今後の流れ
+   ========================================================= */
+.flow-list{ list-style:none; }
+.flow-list li{
+  display:flex; gap:18px; align-items:flex-start;
+  padding:16px 0; border-bottom:1px solid var(--border);
+}
+.flow-list li:last-child{ border-bottom:none; }
+.flow-time{
+  font-family:var(--eng); font-size:1.05rem; letter-spacing:.1em;
+  color:var(--accent); font-weight:600; white-space:nowrap; min-width:70px;
+}
+.flow-desc{ font-size:.92rem; line-height:1.7; }
+.flow-desc .ph-note{ font-size:.82rem; }
+
+.future-flow{
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:18px; box-shadow:var(--shadow); padding:8px 24px;
 }
 
-/* 横スクロールシアター */
-.hscroll{padding:10px 0 clamp(40px,7vw,60px);}
-.hscroll.js-hs{
-  height:100vh;height:100svh;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:0;
+/* 馴れ初め：プロポーズ写真（タイムライン内） */
+.tl-photo{ margin:14px 0 4px; }
+
+/* =========================================================
+   思い出ギャラリー
+   ========================================================= */
+/* メイン写真（大きく1枚） */
+.gallery-main{ margin:0 0 18px; }
+.gmain{
+  width:100%; aspect-ratio:3/2; border-radius:16px; object-fit:cover; display:block;
 }
-.hs-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-.hs-wrap::-webkit-scrollbar{display:none;}
-.js-hs .hs-wrap{overflow:visible;}
-.hs-track{
-  display:flex;align-items:center;
-  gap:clamp(16px,3vw,30px);
-  width:max-content;
-  padding:0 24px;
-}
-.hs-card{
-  position:relative;flex-shrink:0;
-  height:min(56svh,480px);
-  aspect-ratio:3/4;
-  cursor:pointer;
-  box-shadow:0 18px 40px -18px rgba(35,38,46,.22);
-}
-.hs-card.wide{aspect-ratio:4/3;}
-@media(min-width:880px){.hs-card{height:min(62svh,560px);}}
-.hs-card img{transition:transform .8s ease;}
-@media(hover:hover){.hs-card:hover img{transform:scale(1.04);}}
-.hs-idx{
-  position:absolute;bottom:12px;left:14px;z-index:2;
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:13px;letter-spacing:.2em;
-  color:rgba(255,255,255,.92);
-  text-shadow:0 1px 10px rgba(0,0,0,.45);
-}
-.hs-hint{
-  text-align:center;margin-top:clamp(44px,7vw,56px);
-  font-size:11px;font-weight:500;letter-spacing:.24em;color:var(--ink-soft);
-}
-.g-cap{
-  position:absolute;top:10px;left:10px;z-index:2;
-  background:rgba(255,255,255,.88);
-  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-  font-family:var(--font-min);font-weight:600;
-  color:var(--ink);
-  font-size:11px;letter-spacing:.22em;text-indent:.1em;
-  border-radius:2px;
-  padding:4px 12px;
+.gallery-main figcaption{
+  text-align:center; font-size:.85rem; letter-spacing:.06em; color:var(--accent);
+  margin-top:12px; font-family:var(--serif);
 }
 
-/* 家族との思い出（グリッド） */
-.gallery2{padding:clamp(60px,10vw,100px) 0 clamp(110px,17vw,170px);}
-.g-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,3vw,22px);position:relative;z-index:2;}
-@media(min-width:760px){.g-grid{grid-template-columns:1fr 1fr 1fr;}}
-.g-item{
-  position:relative;aspect-ratio:1/1;cursor:pointer;
-  box-shadow:0 14px 30px -14px rgba(35,38,46,.16);
+/* サブ見出し（ふたりの思い出／家族との思い出） */
+.gallery-subtitle{
+  font-family:var(--serif); font-weight:500; font-size:1.02rem; letter-spacing:.12em;
+  color:var(--text); text-align:center; margin:38px 0 18px; position:relative;
 }
-.g-item img{transition:transform .8s ease;}
-@media(hover:hover){.g-item:hover img{transform:scale(1.05);}}
-.g-wide{
-  grid-column:1/-1;aspect-ratio:16/9;cursor:pointer;
-  box-shadow:0 14px 30px -14px rgba(35,38,46,.16);
-}
-.g-wide img{transition:transform .8s ease;}
-@media(hover:hover){.g-wide:hover img{transform:scale(1.02);}}
-.g-hint{
-  text-align:center;margin-top:30px;
-  font-size:11px;font-weight:500;letter-spacing:.24em;color:var(--ink-soft);
+.gallery-subtitle::after{
+  content:""; display:block; width:28px; height:1px; background:var(--accent);
+  margin:10px auto 0; opacity:.6;
 }
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
-.footer{
-  position:relative;overflow:hidden;
-  background:var(--ink);color:var(--bg);
-  padding:clamp(110px,17vw,170px) 0 64px;
-  text-align:center;
+/* タイル（横幅を自動で埋める） */
+.gallery-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px;
 }
-.footer .orb{background:radial-gradient(circle at 40% 35%,rgba(195,168,120,.12),rgba(195,168,120,0) 70%);}
-.ft-ghost{
-  position:absolute;left:50%;top:clamp(20px,4vw,50px);
-  transform:translateX(-50%);
-  font-family:var(--font-en);font-style:italic;font-weight:600;
-  font-size:clamp(96px,24vw,260px);line-height:1;white-space:nowrap;
-  color:transparent;-webkit-text-stroke:1px rgba(245,242,235,.08);
-  pointer-events:none;user-select:none;z-index:0;
+.gallery-grid figure{ margin:0; }
+.gallery-grid figure.wide{ grid-column:1 / -1; }
+.gtile{
+  width:100%; aspect-ratio:1/1; border-radius:12px; object-fit:cover; display:block;
 }
-.ft-inner{position:relative;z-index:2;}
-.ft-script{
-  font-family:var(--font-en);font-style:italic;font-weight:500;
-  font-size:clamp(46px,12vw,84px);
-  line-height:1.15;color:var(--gold-soft);
-  margin-bottom:clamp(40px,8vw,64px);
-  overflow:hidden;
+.gwide{
+  width:100%; aspect-ratio:16/9; border-radius:12px; object-fit:cover; display:block;
 }
-.ft-script .ch{display:inline-block;white-space:pre;}
-.ft-msg{
-  font-family:var(--font-min);font-weight:500;
-  font-size:clamp(12.5px,3.5vw,15.5px);
-  line-height:2.7;letter-spacing:.06em;
-  color:rgba(245,242,235,.86);
-}
-.ft-msg+.ft-msg{margin-top:1.9em;}
-.ft-names{
-  margin-top:3em;
-  font-family:var(--font-min);font-weight:600;
-  font-size:clamp(15px,4.4vw,19px);letter-spacing:.22em;
-  color:var(--bg);
-}
-.ft-date{
-  font-family:var(--font-en);font-weight:500;
-  margin-top:16px;font-size:clamp(13px,3.6vw,15px);
-  letter-spacing:.34em;text-indent:.34em;
-  color:var(--gold-soft);
-}
-.ft-rule{width:44px;height:1px;background:rgba(195,168,120,.5);margin:clamp(44px,8vw,64px) auto;}
-.ft-note{
-  font-family:var(--font-en);font-weight:500;
-  font-size:10.5px;letter-spacing:.3em;
-  color:rgba(245,242,235,.4);
+.gallery-grid figcaption{
+  text-align:center; font-size:.78rem; letter-spacing:.04em; color:#6f6a62;
+  margin-top:8px; line-height:1.5;
 }
 
-/* ============================================================
-   LIGHTBOX
-   ============================================================ */
-#lb{
-  position:fixed;inset:0;z-index:900;
-  background:rgba(24,26,32,.9);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;
-  padding:20px;
+/* =========================================================
+   フッター
+   ========================================================= */
+footer{
+  text-align:center; padding:56px 22px 64px; background:var(--accent);
+  color:#fff; margin-top:20px;
 }
-#lb.show{opacity:1;visibility:visible;}
-#lb img{
-  max-width:min(94vw,900px);max-height:82vh;
-  width:auto;height:auto;object-fit:contain;
-  border-radius:4px;
-  box-shadow:0 30px 80px rgba(0,0,0,.5);
-  transform:scale(.95);transition:transform .4s cubic-bezier(.22,.8,.3,1);
+footer .f-names{
+  font-family:var(--serif); font-weight:500; font-size:1.25rem; letter-spacing:.16em;
 }
-#lb.show img{transform:scale(1);}
-#lb-cap{
-  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
-  color:rgba(245,242,235,.9);
-  font-family:var(--font-min);font-weight:600;
-  font-size:13px;letter-spacing:.3em;text-indent:.3em;
+footer .f-date{
+  font-family:var(--eng); font-size:1rem; letter-spacing:.18em;
+  color:#cfe2da; margin-top:12px;
 }
-#lb-close{
-  position:absolute;top:18px;right:18px;
-  width:46px;height:46px;border-radius:50%;
-  background:transparent;border:1px solid rgba(245,242,235,.5);
-  font-size:17px;color:rgba(245,242,235,.9);
-  cursor:pointer;line-height:1;
-  transition:background .3s;
+footer .f-message{
+  font-family:var(--serif); font-weight:300; font-size:.84rem; line-height:2.2;
+  letter-spacing:.02em; color:#eef4f1; margin-top:30px;
 }
-#lb-close:hover{background:rgba(245,242,235,.12);}
+footer .f-heart{ font-family:var(--eng); font-style:italic; color:#cfe2da; margin-top:30px; font-size:.9rem; }
 
-/* ============================================================
-   MOTION SAFETY
-   ============================================================ */
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
-  html{scroll-behavior:auto;}
+/* =========================================================
+   レスポンシブ（PC）
+   ========================================================= */
+@media (min-width:640px){
+  .hero-families{ font-size:2.1rem; }
+  .section-title{ font-size:1.6rem; }
+  .family-grid{ grid-template-columns:1fr 1fr; }
+  .person{ flex-direction:row; align-items:flex-start; gap:30px; }
+  .person .photo-ph.portrait{ width:210px; flex-shrink:0; }
+  .person .person-detail{ flex:1; }
+  .person-head{ text-align:left; }
+}
+
+/* スクロール出現アニメーション */
+.reveal{ opacity:0; transform:translateY(18px); transition:opacity .8s ease, transform .8s ease; }
+.reveal.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion:reduce){
+  .reveal{ opacity:1; transform:none; transition:none; }
+  #content{ transition:none; }
 }
 </style>
 </head>
-<body class="locked">
+<body>
 
-<div class="grain" aria-hidden="true"></div>
-<div id="pbar" aria-hidden="true"></div>
-
-<!-- ==================== PASSWORD GATE ==================== -->
+<!-- =========================================================
+     3-0. パスワード画面
+     ========================================================= -->
 <div id="gate">
-  <div class="gate-inner" id="gateCard">
-    <p class="gate-en">SADAMOTO &amp; OTA</p>
-    <h1 class="gate-title">両家顔合わせ食事会</h1>
-    <div class="gate-rule" aria-hidden="true"></div>
-    <p class="gate-note">パスワードを入力してください</p>
-    <form class="gate-form" id="gateForm">
-      <input class="gate-input" id="gateInput" type="password" inputmode="numeric" autocomplete="off" placeholder="········" aria-label="パスワード">
-      <button class="gate-btn" type="submit">ひらく</button>
-    </form>
-    <p class="gate-error" id="gateError">パスワードが違います</p>
+  <div class="gate-eng">Sadamoto &amp; Ota</div>
+  <h1>両家顔合わせ</h1>
+  <p>合言葉を入力してください</p>
+  <div class="gate-box">
+    <input type="password" id="gate-input" placeholder="パスワード" autocomplete="off" inputmode="text">
+    <button id="gate-btn">ひらく</button>
+    <div id="gate-error">パスワードが違うようです</div>
   </div>
+  <div class="gate-ornament">Welcome to our families</div>
 </div>
 
-<!-- ==================== MAIN ==================== -->
-<main id="main">
 
-  <!-- HERO -->
-  <section class="hero">
-    <span class="ghost" data-gx="-6" style="top:auto;bottom:clamp(0px,3vw,30px);" aria-hidden="true">Setouchi</span>
-    <div class="orb" style="top:8%;right:-60px;width:280px;height:280px;" aria-hidden="true"></div>
-    <div class="orb" style="bottom:10%;left:-80px;width:320px;height:320px;animation-delay:3s;" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="hero-over" data-in="fade">SADAMOTO &amp; OTA</p>
-          <p class="hero-fam" data-in="fade">貞本家 ・ 太田家</p>
-          <h2 class="hero-title">
-            <span class="ht-line"><span class="ht-row" data-in="line">両家顔合わせ</span></span>
-            <span class="ht-line"><span class="ht-row" data-in="line">食事会</span></span>
-          </h2>
-          <div class="hero-date" data-in="fade">
-            <span class="d">2026.7.19</span>
-            <span class="dow">Sun.</span>
-          </div>
-          <p class="hero-meta" data-in="fade">12:00 – 14:00<span class="sep">｜</span>グランドプリンスホテル広島</p>
-          <div class="hero-rule" data-in="rule" aria-hidden="true"></div>
-        </div>
-        <div class="hero-visual">
-          <div class="hv" data-in="hv">
-            <div class="ring" aria-hidden="true">
-              <svg viewBox="0 0 100 100">
-                <defs><path id="rpath" d="M50,50 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"></path></defs>
-                <text><textPath href="#rpath">SETO INLAND SEA ・ HIROSHIMA ・ </textPath></text>
-              </svg>
-            </div>
-            <div class="hv-frame">
-              <video id="heroVideo" src="photos/headermovie.mp4" muted loop playsinline autoplay preload="metadata"></video>
-            </div>
-            <p class="hv-cap">Seto Inland Sea</p>
-          </div>
-        </div>
-      </div>
+<!-- =========================================================
+     メインコンテンツ
+     ========================================================= -->
+<div id="content">
+
+  <!-- ===== 3-1. ヒーロー（メインビジュアル＋トップ） ===== -->
+  <header id="hero">
+    <div class="hero-movie-wrap reveal">
+      <!-- 動画: ヘッダー動画をここに入れる -->
+      <video class="hero-movie" src="photos/headermovie.mp4" autoplay muted loop playsinline preload="auto"></video>
     </div>
-    <div class="scroll-cue" aria-hidden="true">SCROLL</div>
+    <div class="hero-visual reveal">
+      <!-- 写真: ふたりのメインビジュアル画像をここに入れる -->
+      <div class="photo-ph hero"><img src="photos/header.jpg" alt="貞本家と太田家"></div>
+    </div>
+    <div class="hero-copy reveal">
+      <div class="hero-families">貞本家<span class="x">&amp;</span>太田家</div>
+      <div class="hero-sub">顔合わせ食事会</div>
+      <!-- 日時・場所を入れる -->
+      <div class="hero-date">2026 . 07 . 19</div>
+      <div class="hero-time">12:00 &ndash; 14:00</div>
+      <div class="hero-place">＠ グランドプリンスホテル広島</div>
+    </div>
+  </header>
+
+  <div class="divider wide"></div>
+
+  <!-- ===== 3-2. ごあいさつ ===== -->
+  <section id="greeting" class="wrap reveal">
+    <div class="eyebrow">Greeting</div>
+    <h2 class="section-title">ごあいさつ</h2>
+    <p class="greeting-text">
+      本日はお集まりいただき<br>ありがとうございます<br><br>
+      両家の皆さまが<br>この場で初めてお会いになることを<br>
+      心より嬉しく思います<br><br>
+      本日はどうぞよろしくお願いいたします
+    </p>
+    <p class="greeting-sign">貞本裕飛 ・ 太田穂乃里</p>
   </section>
 
-  <!-- MARQUEE -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Sadamoto <i>●</i> Ota <i>●</i> Grand Prince Hotel Hiroshima <i>●</i> Seto Inland Sea <i>●</i> </span>
-      <span>Sadamoto <i>●</i> Ota <i>●</i> Grand Prince Hotel Hiroshima <i>●</i> Seto Inland Sea <i>●</i> </span>
-    </div>
-  </div>
+  <div class="divider"></div>
 
-  <!-- GREETING -->
-  <section class="greeting">
-    <span class="ghost" data-gx="7" aria-hidden="true">Greeting</span>
-    <div class="orb" style="top:16%;left:-70px;width:240px;height:240px;" aria-hidden="true"></div>
-    <div class="wrap wrap-narrow">
-      <div class="sec-head">
-        <p class="sec-en fup">GREETING</p>
-        <h2 class="sec-jp split">ごあいさつ</h2>
-        <div class="sec-rule fup" aria-hidden="true"></div>
-      </div>
-      <p class="greet-txt fup">本日はお集まりいただき<br>ありがとうございます</p>
-      <p class="greet-txt fup">両家の皆さまが この場で初めてお会いになることを<br>心より嬉しく思います</p>
-      <p class="greet-txt fup">本日はどうぞよろしくお願いいたします</p>
-      <p class="greet-names fup">貞本裕飛 ・ 太田穂乃里</p>
-    </div>
-  </section>
+  <!-- ===== 3-3. おふたりのページ ===== -->
+  <section id="couple" class="wrap">
+    <div class="eyebrow reveal">The Two of Us</div>
+    <h2 class="section-title reveal">ふたりのこと</h2>
 
-  <!-- MAIN VISUAL（スクロールで開く） -->
-  <section class="mainvisual">
-    <div class="wrap">
-      <div class="mv-clip frame" id="mvClip">
-        <img id="mvImg" src="photos/header.jpg" alt="裕飛と穂乃里" loading="lazy">
-      </div>
-      <p class="mv-caption fup">Yuto <span class="amp">&amp;</span> Honori</p>
-    </div>
-  </section>
-
-  <!-- PROFILE -->
-  <section class="profile">
-    <span class="ghost" data-gx="-7" aria-hidden="true">Profile</span>
-    <div class="orb" style="top:4%;right:-70px;width:260px;height:260px;" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="sec-en fup">PROFILE</p>
-        <h2 class="sec-jp split">ふたりの紹介</h2>
-        <div class="sec-rule fup" aria-hidden="true"></div>
-      </div>
-      <div class="duo-grid">
-
-        <div class="p-card fup">
-          <div class="p-photo frame rvimg">
-            <img src="photos/profile-yuto.jpg" alt="貞本裕飛" loading="lazy">
-          </div>
-          <p class="p-role">Groom</p>
-          <h3 class="p-name">貞本 裕飛</h3>
-          <p class="p-kana">さだもと ゆうと</p>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">1994年7月8日（31歳）</span></div>
-            <div class="row"><span class="dt">出身地</span><span class="dd">広島県広島市</span></div>
-            <div class="row"><span class="dt">居住地</span><span class="dd">東京都（広島 → メルボルン → 東京）</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">野球（草野球＆プロ野球観戦）、テニス、スノーボード、テントサウナ、ゲーム、宇宙（相対性理論・宇宙物理学）</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">ラザニア、カルボナーラ、寿司、フライドポテト</span></div>
-          </div>
+    <!-- 貞本 裕飛 -->
+    <div class="person reveal" style="margin-bottom:48px;">
+      <!-- 写真: 裕飛の写真をここに入れる -->
+      <div class="photo-ph portrait"><img src="photos/profile-yuto.jpg" alt="貞本 裕飛"></div>
+      <div class="person-detail">
+        <div class="person-head">
+          <div class="person-name">貞本 裕飛<span class="reading">Yuto</span></div>
+          <span class="person-role">新郎</span>
         </div>
+        <table class="profile">
+          <tr><th>生年月日</th><td>1994年7月8日（31歳）</td></tr>
+          <tr><th>出身地</th><td>広島県広島市</td></tr>
+          <tr><th>居住地</th><td>東京都（広島 → メルボルン → 東京）</td></tr>
+          <tr><th>趣味</th><td>野球（草野球＆プロ野球観戦）、テニス、スノーボード、テントサウナ、ゲーム、宇宙（相対性理論・宇宙物理学）</td></tr>
+          <tr><th>好きな食べ物</th><td>ラザニア、カルボナーラ、寿司、フライドポテト</td></tr>
+        </table>
+      </div>
+    </div>
 
-        <div class="p-card fup">
-          <div class="p-photo frame rvimg">
-            <img src="photos/profile-honori1.jpg" alt="太田穂乃里" loading="lazy">
-          </div>
-          <p class="p-role">Bride</p>
-          <h3 class="p-name">太田 穂乃里</h3>
-          <p class="p-kana">おおた ほのり</p>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">1993年10月6日（32歳）</span></div>
-            <div class="row"><span class="dt">出身地</span><span class="dd">東京都調布市</span></div>
-            <div class="row"><span class="dt">居住地</span><span class="dd">東京都（調布 → ロサンゼルス → 世田谷ほか）</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">サウナ、料理、旅行（自然）</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">母の餃子、ゆうとくんのラザニア、蟹、カレー、ラーメン</span></div>
-          </div>
+    <!-- 太田 穂乃里 -->
+    <div class="person reveal">
+      <!-- 写真: 穂乃里の写真をここに入れる -->
+      <div class="photo-ph portrait"><img src="photos/profile-honori1.jpg" alt="太田 穂乃里"></div>
+      <div class="person-detail">
+        <div class="person-head">
+          <div class="person-name">太田 穂乃里<span class="reading">Honori</span></div>
+          <span class="person-role">新婦</span>
         </div>
-
+        <table class="profile">
+          <tr><th>生年月日</th><td>1993年10月6日（32歳）</td></tr>
+          <tr><th>出身地</th><td>東京都調布市</td></tr>
+          <tr><th>居住地</th><td>東京都（調布 → ロサンゼルス → 世田谷ほか）</td></tr>
+          <tr><th>趣味</th><td>サウナ、料理、旅行（自然）</td></tr>
+          <tr><th>好きな食べ物</th><td>母の餃子、ゆうとくんのラザニア、蟹、カレー、ラーメン</td></tr>
+        </table>
       </div>
     </div>
   </section>
 
-  <!-- STORY / TIMELINE -->
-  <section class="story">
-    <span class="ghost" data-gx="6" aria-hidden="true">Our Story</span>
-    <div class="orb" style="bottom:8%;right:-60px;width:240px;height:240px;animation-delay:2s;" aria-hidden="true"></div>
-    <div class="wrap wrap-narrow">
-      <div class="sec-head">
-        <p class="sec-en fup">OUR STORY</p>
-        <h2 class="sec-jp split">ふたりのあゆみ</h2>
-        <div class="sec-rule fup" aria-hidden="true"></div>
+  <div class="divider"></div>
+
+  <!-- ===== なれそめ / タイムライン ===== -->
+  <section id="story" class="wrap">
+    <div class="eyebrow reveal">Our Story</div>
+    <h2 class="section-title reveal">馴れ初め</h2>
+    <p class="story-lead reveal">
+      裕飛の会社の同期と穂乃里のアルバイト時代の友人が共通の友人で、食事の場で出会いました。
+      友人グループ10名ほどで、テントサウナ・バーベキュー・お祭り・旅行などを通じて交流を深めていきました。
+    </p>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-date">2024.03.02</div>
+        <div class="tl-event">はじめて出会った日</div>
       </div>
-      <p class="story-lead fup">
-        裕飛の会社の同期と穂乃里のアルバイト時代の友人が共通の友人で、食事の場で出会いました。<br>
-        友人グループ10名ほどで、テントサウナ・バーベキュー・お祭り・旅行などを通じて交流を深めていきました。
-      </p>
-      <div class="tl">
-        <div class="tl-line" id="tlLine" aria-hidden="true"></div>
-        <div class="tl-item fup">
-          <p class="tl-date">2024.03.02</p>
-          <p class="tl-label">はじめて出会った日</p>
-        </div>
-        <div class="tl-item fup">
-          <p class="tl-date">2024.07.14</p>
-          <p class="tl-label">交際スタート</p>
-        </div>
-        <div class="tl-item fup">
-          <p class="tl-date">2025.06.07</p>
-          <p class="tl-label">同居スタート</p>
-        </div>
-        <div class="tl-item fup">
-          <p class="tl-date">2026.01.23</p>
-          <p class="tl-label">プロポーズ</p>
-          <div class="tl-photo lb-open" data-src="photos/propose.jpg">
-            <div class="frame rvimg">
-              <img src="photos/propose.jpg" alt="プロポーズ" loading="lazy">
-            </div>
-            <p class="tl-photo-cap">— Proposal</p>
-          </div>
-        </div>
-        <div class="tl-item future fup">
-          <p class="tl-date">2027.01.23</p>
-          <p class="tl-label">入籍予定<span class="tl-soon">coming soon</span></p>
-        </div>
+      <div class="tl-item reveal">
+        <div class="tl-date">2024.07.14</div>
+        <div class="tl-event">交際スタート</div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-date">2025.06.07</div>
+        <div class="tl-event">同居スタート</div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-date">2026.01.23</div>
+        <div class="tl-event">プロポーズ</div>
+        <!-- 写真: プロポーズの写真 -->
+        <figure class="tl-photo">
+          <div class="photo-ph gmain"><img src="photos/propose.jpg" alt="プロポーズ"></div>
+        </figure>
+      </div>
+      <div class="tl-item future reveal">
+        <div class="tl-date">2027.01.23</div>
+        <div class="tl-event">入籍予定</div>
       </div>
     </div>
   </section>
 
-  <!-- MARQUEE -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Family <i>●</i> Sadamoto <i>●</i> Ota <i>●</i> Nice to meet you <i>●</i> Family <i>●</i> Sadamoto <i>●</i> Ota <i>●</i> Nice to meet you <i>●</i> </span>
-      <span>Family <i>●</i> Sadamoto <i>●</i> Ota <i>●</i> Nice to meet you <i>●</i> Family <i>●</i> Sadamoto <i>●</i> Ota <i>●</i> Nice to meet you <i>●</i> </span>
-    </div>
-  </div>
+  <div class="divider wide"></div>
 
-  <!-- SADAMOTO FAMILY -->
-  <section class="family">
-    <span class="ghost" data-gx="-6" aria-hidden="true">Family</span>
-    <div class="orb" style="top:6%;left:-70px;width:260px;height:260px;" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="sec-en fup">SADAMOTO FAMILY</p>
-        <h2 class="sec-jp split">貞本家</h2>
-        <div class="sec-rule fup" aria-hidden="true"></div>
-      </div>
-      <div class="fam-grid cols3">
+  <!-- ===== 3-4. 貞本家 家族紹介 ===== -->
+  <section id="sadamoto" class="wrap family-section">
+    <h2 class="family-heading reveal">貞本家<span class="eng">The Sadamoto Family</span></h2>
+    <div class="family-grid">
 
-        <div class="f-card fup">
-          <div class="f-photo frame rvimg">
-            <img src="photos/profile-sumiko.jpg" alt="貞本澄子" loading="lazy">
-          </div>
-          <p class="f-role">Sumiko <span class="jp">｜祖母</span></p>
-          <h3 class="f-name">貞本 澄子</h3>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">1944年11月8日</span></div>
-            <div class="row"><span class="dt">出身/在住</span><span class="dd">広島県安芸郡府中町 出身／広島県広島市 在住</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">ビール、サスペンス、編み物</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">ビール、煮魚、あゆ、てんぷら、とんかつ</span></div>
-          </div>
+      <!-- 澄子｜祖母 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 澄子の写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-sumiko.jpg" alt="貞本 澄子"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 澄子<span class="reading">Sumiko</span></div>
+          <span class="fcard-rel">祖母</span>
+          <dl>
+            <dt>生年月日</dt><dd>1944年11月8日</dd>
+            <dt>出身地</dt><dd>広島県安芸郡府中町</dd>
+            <dt>居住地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>ビール、サスペンス、編み物</dd>
+            <dt>好きな食べ物</dt><dd>ビール、煮魚、あゆ、てんぷら、とんかつ</dd>
+          </dl>
         </div>
+      </article>
 
-        <div class="f-card fup">
-          <div class="f-photo frame rvimg">
-            <img src="photos/profile-toru1.jpg" alt="貞本徹" loading="lazy" style="object-position:50% center;">
-          </div>
-          <p class="f-role">Toru <span class="jp">｜父</span></p>
-          <h3 class="f-name">貞本 徹</h3>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">1970年9月17日</span></div>
-            <div class="row"><span class="dt">出身/在住</span><span class="dd">徳島県鳴門市 出身／広島県広島市 在住</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">ゴルフ、釣り、ウェイクボード</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">お好み焼き、麻婆豆腐、蕎麦</span></div>
-          </div>
+      <!-- 徹｜父 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 徹の写真をここに入れる（横長のため本人を中央寄せ） -->
+        <div class="photo-ph"><img src="photos/profile-toru1.jpg" alt="貞本 徹" style="object-position:50% center;"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 徹<span class="reading">Toru</span></div>
+          <span class="fcard-rel">父</span>
+          <dl>
+            <dt>生年月日</dt><dd>1970年9月17日</dd>
+            <dt>出身地</dt><dd>徳島県鳴門市</dd>
+            <dt>居住地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>ゴルフ、釣り、ウェイクボード</dd>
+            <dt>好きな食べ物</dt><dd>お好み焼き、麻婆豆腐、蕎麦</dd>
+          </dl>
         </div>
+      </article>
 
-        <div class="f-card fup">
-          <div class="f-photo frame rvimg">
-            <img src="photos/profile-lee1.jpg" alt="貞本リー" loading="lazy">
-          </div>
-          <p class="f-role">Lee <span class="jp">｜母</span></p>
-          <h3 class="f-name">貞本 リー</h3>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">1983年1月8日</span></div>
-            <div class="row"><span class="dt">出身/在住</span><span class="dd">オーストラリア タンワース 出身／広島県広島市 在住</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">マラソン、ジャザサイズ、園芸、裁縫</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">ピザ、かつ丼</span></div>
-          </div>
+      <!-- リー｜母 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 リーの写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-lee1.jpg" alt="貞本 リー"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 リー<span class="reading">Lee</span></div>
+          <span class="fcard-rel">母</span>
+          <dl>
+            <dt>生年月日</dt><dd>1983年1月8日</dd>
+            <dt>出身地</dt><dd>オーストラリア タンワース</dd>
+            <dt>居住地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>マラソン、ジャザサイズ、園芸、裁縫</dd>
+            <dt>好きな食べ物</dt><dd>ピザ、かつ丼</dd>
+          </dl>
         </div>
+      </article>
 
-        <div class="f-card fup">
-          <div class="f-photo frame rvimg">
-            <img src="photos/profile-roku1.jpg" alt="貞本六" loading="lazy" style="object-position:62% center;">
-          </div>
-          <p class="f-role">Roku <span class="jp">｜妹</span></p>
-          <h3 class="f-name">貞本 六</h3>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">2015年4月3日</span></div>
-            <div class="row"><span class="dt">出身/在住</span><span class="dd">広島県広島市</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">ゴルフ、シール、スクイーズ、メイクアップ</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">寿司</span></div>
-            <div class="row"><span class="dt">将来の夢</span><span class="dd">K-popアイドル</span></div>
-          </div>
+      <!-- 六｜妹 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 六の写真をここに入れる（横長のため本人を中央寄せ） -->
+        <div class="photo-ph"><img src="photos/profile-roku1.jpg" alt="貞本 六" style="object-position:62% center;"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 六<span class="reading">Roku</span></div>
+          <span class="fcard-rel">妹</span>
+          <dl>
+            <dt>生年月日</dt><dd>2015年4月3日</dd>
+            <dt>出身地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>ゴルフ、シール、スクイーズ、メイクアップ</dd>
+            <dt>好きな食べ物</dt><dd>寿司</dd>
+            <dt>将来の夢</dt><dd>K-popアイドル</dd>
+          </dl>
         </div>
+      </article>
 
-        <div class="f-card fup">
-          <div class="f-photo frame rvimg">
-            <img src="photos/profile-sen1.jpg" alt="貞本川" loading="lazy">
-          </div>
-          <p class="f-role">Sen <span class="jp">｜妹</span></p>
-          <h3 class="f-name">貞本 川</h3>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">2017年7月20日</span></div>
-            <div class="row"><span class="dt">出身/在住</span><span class="dd">広島県広島市</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">空手、バイオリン、野球、テレビ、お笑い（ノンスタイル）、上り棒</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">センマイ</span></div>
-            <div class="row"><span class="dt">将来の夢</span><span class="dd">パイロット、自衛隊</span></div>
-          </div>
+      <!-- 川｜妹 -->
+      <article class="fcard reveal">
+        <!-- 写真: 貞本 川の写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-sen1.jpg" alt="貞本 川"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">貞本 川<span class="reading">Sen</span></div>
+          <span class="fcard-rel">妹</span>
+          <dl>
+            <dt>生年月日</dt><dd>2017年7月20日</dd>
+            <dt>出身地</dt><dd>広島県広島市</dd>
+            <dt>趣味</dt><dd>空手、バイオリン、野球、テレビ、お笑い（ノンスタイル）、上り棒</dd>
+            <dt>好きな食べ物</dt><dd>センマイ</dd>
+            <dt>将来の夢</dt><dd>パイロット、自衛隊</dd>
+          </dl>
         </div>
+      </article>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- OTA FAMILY -->
-  <section class="family">
-    <span class="ghost" data-gx="6" aria-hidden="true">Family</span>
-    <div class="orb" style="bottom:4%;right:-70px;width:240px;height:240px;animation-delay:4s;" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="sec-en fup">OTA FAMILY</p>
-        <h2 class="sec-jp split">太田家</h2>
-        <div class="sec-rule fup" aria-hidden="true"></div>
-      </div>
-      <div class="fam-grid cols2">
-
-        <div class="f-card fup">
-          <div class="f-photo frame rvimg">
-            <img src="photos/profile-yuichi.jpg" alt="太田雄一" loading="lazy">
-          </div>
-          <p class="f-role">Yuichi <span class="jp">｜父</span></p>
-          <h3 class="f-name">太田 雄一</h3>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">1960年4月25日</span></div>
-            <div class="row"><span class="dt">出身/在住</span><span class="dd">神奈川県横浜市 出身／東京都稲城市 在住</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">AIデザイン、スポーツ</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">かつ丼、ラーメン、野菜</span></div>
-          </div>
-        </div>
-
-        <div class="f-card fup">
-          <div class="f-photo frame rvimg">
-            <img src="photos/profile-yukiko.jpg" alt="太田由貴子" loading="lazy" style="transform:scale(1.28);transform-origin:36% top;">
-          </div>
-          <p class="f-role">Yukiko <span class="jp">｜母</span></p>
-          <h3 class="f-name">太田 由貴子</h3>
-          <div class="dl">
-            <div class="row"><span class="dt">生年月日</span><span class="dd">1961年1月31日</span></div>
-            <div class="row"><span class="dt">出身/在住</span><span class="dd">静岡県沼津市 出身／東京都稲城市 在住</span></div>
-            <div class="row"><span class="dt">趣味</span><span class="dd">ゴルフ、スポーツ観戦、女子旅</span></div>
-            <div class="row"><span class="dt">好きなもの</span><span class="dd">寿司、桃、牛タン</span></div>
-          </div>
-        </div>
-
-      </div>
     </div>
   </section>
 
-  <!-- GALLERY HEAD -->
-  <section class="gallery-head">
-    <span class="ghost" data-gx="-7" aria-hidden="true">Memories</span>
-    <div class="wrap">
-      <div class="sec-head" style="margin-bottom:clamp(36px,6vw,56px);">
-        <p class="sec-en fup">MEMORIES</p>
-        <h2 class="sec-jp split">思い出ギャラリー</h2>
-        <div class="sec-rule fup" aria-hidden="true"></div>
-      </div>
-      <div class="g-sub fup"><span>ふたりの思い出</span></div>
+  <div class="divider wide"></div>
+
+  <!-- ===== 3-5. 太田家 家族紹介 ===== -->
+  <section id="ota" class="wrap family-section">
+    <h2 class="family-heading reveal">太田家<span class="eng">The Ota Family</span></h2>
+    <div class="family-grid">
+
+      <!-- 雄一｜父 -->
+      <article class="fcard reveal">
+        <!-- 写真: 太田 雄一の写真をここに入れる -->
+        <div class="photo-ph"><img src="photos/profile-yuichi.jpg" alt="太田 雄一"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">太田 雄一<span class="reading">Yuichi</span></div>
+          <span class="fcard-rel">父</span>
+          <dl>
+            <dt>生年月日</dt><dd>1960年4月25日</dd>
+            <dt>出身地</dt><dd>神奈川県横浜市</dd>
+            <dt>居住地</dt><dd>東京都稲城市</dd>
+            <dt>趣味</dt><dd>AIデザイン、スポーツ</dd>
+            <dt>好きな食べ物</dt><dd>かつ丼、ラーメン、野菜</dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- 由貴子｜母 -->
+      <article class="fcard reveal">
+        <!-- 写真: 太田 由貴子の写真をここに入れる（上を固定して拡大＝下のケーキのプレートを除外） -->
+        <div class="photo-ph"><img src="photos/profile-yukiko.jpg" alt="太田 由貴子" style="transform:scale(1.28);transform-origin:36% top;"></div>
+        <div class="fcard-body">
+          <div class="fcard-name">太田 由貴子<span class="reading">Yukiko</span></div>
+          <span class="fcard-rel">母</span>
+          <dl>
+            <dt>生年月日</dt><dd>1961年1月31日</dd>
+            <dt>出身地</dt><dd>静岡県沼津市</dd>
+            <dt>居住地</dt><dd>東京都稲城市</dd>
+            <dt>趣味</dt><dd>ゴルフ、スポーツ観戦、女子旅</dd>
+            <dt>好きな食べ物</dt><dd>寿司、桃、牛タン</dd>
+          </dl>
+        </div>
+      </article>
+
     </div>
   </section>
 
-  <!-- 横スクロールシアター -->
-  <section class="hscroll" id="hs">
-    <div class="hs-wrap">
-      <div class="hs-track" id="hsTrack">
-        <figure class="hs-card wide frame lb-open" data-src="photos/gallery-yutohonori.jpg">
-          <img src="photos/gallery-yutohonori.jpg" alt="ふたりの思い出" loading="lazy">
-          <figcaption class="hs-idx">01</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori1.jpg">
-          <img src="photos/gallery-yutohonori1.jpg" alt="ふたりの思い出" loading="lazy">
-          <figcaption class="hs-idx">02</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori-hawaii.jpg" data-cap="ハワイ">
-          <span class="g-cap">ハワイ</span>
-          <img src="photos/gallery-yutohonori-hawaii.jpg" alt="ハワイ" loading="lazy">
-          <figcaption class="hs-idx">03 — Hawaii</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori-hawaii2.jpg" data-cap="ハワイ">
-          <img src="photos/gallery-yutohonori-hawaii2.jpg" alt="ハワイ" loading="lazy">
-          <figcaption class="hs-idx">04</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori-hawaii4.jpg" data-cap="ハワイ">
-          <img src="photos/gallery-yutohonori-hawaii4.jpg" alt="ハワイ" loading="lazy">
-          <figcaption class="hs-idx">05</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori-niseko2.jpg" data-cap="ニセコ">
-          <span class="g-cap">ニセコ</span>
-          <img src="photos/gallery-yutohonori-niseko2.jpg" alt="ニセコ" loading="lazy">
-          <figcaption class="hs-idx">06 — Niseko</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori-niseko3.jpg" data-cap="ニセコ">
-          <img src="photos/gallery-yutohonori-niseko3.jpg" alt="ニセコ" loading="lazy">
-          <figcaption class="hs-idx">07</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori-kanazawa2.jpg" data-cap="金沢">
-          <span class="g-cap">金沢</span>
-          <img src="photos/gallery-yutohonori-kanazawa2.jpg" alt="金沢" loading="lazy">
-          <figcaption class="hs-idx">08 — Kanazawa</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori-kanazawa3.jpg" data-cap="金沢">
-          <img src="photos/gallery-yutohonori-kanazawa3.jpg" alt="金沢" loading="lazy">
-          <figcaption class="hs-idx">09</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-yutohonori-nagano.jpg" data-cap="長野">
-          <span class="g-cap">長野</span>
-          <img src="photos/gallery-yutohonori-nagano.jpg" alt="長野" loading="lazy">
-          <figcaption class="hs-idx">10 — Nagano</figcaption>
-        </figure>
-        <figure class="hs-card frame lb-open" data-src="photos/gallery-nagano2.jpg" data-cap="長野">
-          <img src="photos/gallery-nagano2.jpg" alt="長野" loading="lazy">
-          <figcaption class="hs-idx">11</figcaption>
-        </figure>
-      </div>
+  <div class="divider wide"></div>
+
+  <!-- ===== 思い出ギャラリー ===== -->
+  <section id="gallery" class="wrap">
+    <div class="eyebrow reveal">Memories</div>
+    <h2 class="section-title reveal">思い出</h2>
+
+    <!-- ▼ メイン写真（大きく1枚） ============================ -->
+    <figure class="gallery-main reveal">
+      <div class="photo-ph gmain"><img src="photos/gallery-yutohonori.jpg" alt="ふたりの思い出"></div>
+    </figure>
+
+    <!-- ▼ ふたりの思い出（ハワイ→ニセコ→金沢→長野の順） ====== -->
+    <h3 class="gallery-subtitle reveal">ふたりの思い出</h3>
+    <div class="gallery-grid">
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori1.jpg" alt="ふたりの思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-hawaii.jpg" alt="ハワイ"></div>
+        <figcaption>ハワイ</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-hawaii2.jpg" alt="ハワイ"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-hawaii4.jpg" alt="ハワイ"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-niseko2.jpg" alt="ニセコ"></div>
+        <figcaption>ニセコ</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-niseko3.jpg" alt="ニセコ"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-kanazawa2.jpg" alt="金沢"></div>
+        <figcaption>金沢</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-kanazawa3.jpg" alt="金沢"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-yutohonori-nagano.jpg" alt="長野"></div>
+        <figcaption>長野</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-nagano2.jpg" alt="長野"></div>
+      </figure>
+    </div>
+
+    <!-- ▼ 家族との思い出（貞本家 sfam → 太田家 ofam の順／キャプションなし） -->
+    <h3 class="gallery-subtitle reveal">家族との思い出</h3>
+    <div class="gallery-grid">
+      <figure class="reveal wide">
+        <div class="photo-ph gwide"><img src="photos/gallery-sfam.jpg" alt="家族との思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-sfam2.jpg" alt="家族との思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-ofam.jpg" alt="家族との思い出"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-ofam3.jpg" alt="家族との思い出" style="transform:scale(1.2);transform-origin:8% center;"></div>
+      </figure>
+      <figure class="reveal">
+        <div class="photo-ph gtile"><img src="photos/gallery-ofam5.jpg" alt="家族との思い出"></div>
+      </figure>
     </div>
   </section>
 
-  <!-- 家族との思い出 -->
-  <section class="gallery2">
-    <div class="wrap">
-      <div class="g-sub fup"><span>家族との思い出</span></div>
-      <div class="g-grid">
-        <div class="g-wide frame rvimg lb-open" data-src="photos/gallery-sfam.jpg">
-          <img src="photos/gallery-sfam.jpg" alt="家族との思い出" loading="lazy">
-        </div>
-        <div class="g-item frame rvimg lb-open" data-src="photos/gallery-sfam2.jpg">
-          <img src="photos/gallery-sfam2.jpg" alt="家族との思い出" loading="lazy">
-        </div>
-        <div class="g-item frame rvimg lb-open" data-src="photos/gallery-ofam.jpg">
-          <img src="photos/gallery-ofam.jpg" alt="家族との思い出" loading="lazy">
-        </div>
-        <div class="g-item frame rvimg lb-open" data-src="photos/gallery-ofam3.jpg">
-          <img src="photos/gallery-ofam3.jpg" alt="家族との思い出" loading="lazy" style="transform:scale(1.2);transform-origin:8% center;">
-        </div>
-        <div class="g-item frame rvimg lb-open" data-src="photos/gallery-ofam5.jpg">
-          <img src="photos/gallery-ofam5.jpg" alt="家族との思い出" loading="lazy">
-        </div>
-      </div>
-      <p class="g-hint fup">写真をタップすると大きく表示されます</p>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <span class="ft-ghost" id="ftGhost" aria-hidden="true">Thank you</span>
-    <div class="orb" style="top:6%;left:-80px;width:300px;height:300px;" aria-hidden="true"></div>
-    <div class="orb" style="bottom:8%;right:-80px;width:280px;height:280px;animation-delay:3s;" aria-hidden="true"></div>
-    <div class="wrap ft-inner">
-      <p class="ft-script split-ft">Thank you</p>
-      <p class="ft-msg fup">本日はお忙しい中<br>私たちのためにお集まりいただき<br>ありがとうございました</p>
-      <p class="ft-msg fup">これからもお互いを思いやり 支え合いながら<br>笑顔あふれる家庭を築いてまいります</p>
-      <p class="ft-msg fup">今後とも温かく見守っていただけますと幸いです<br>末永くよろしくお願いいたします</p>
-      <p class="ft-names fup">貞本裕飛 ・ 太田穂乃里</p>
-      <p class="ft-date fup">2026 . 07 . 19</p>
-      <div class="ft-rule" aria-hidden="true"></div>
-      <p class="ft-note">GRAND PRINCE HOTEL HIROSHIMA — SETO INLAND SEA</p>
-    </div>
+  <!-- ===== 3-7. フッター ===== -->
+  <footer>
+    <div class="f-names">貞本裕飛 ・ 太田穂乃里</div>
+    <div class="f-date">2026 . 07 . 19</div>
+    <p class="f-message">
+      本日はお忙しい中<br>私たちのためにお集まりいただき<br>ありがとうございました<br><br>
+      これからもお互いを思いやり 支え合いながら<br>笑顔あふれる家庭を築いてまいります<br><br>
+      今後とも温かく見守っていただけますと幸いです<br>末永くよろしくお願いいたします
+    </p>
+    <div class="f-heart">Thank you</div>
   </footer>
 
-</main>
+</div><!-- /#content -->
 
-<!-- LIGHTBOX -->
-<div id="lb" role="dialog" aria-modal="true" aria-label="写真の拡大表示">
-  <button id="lb-close" aria-label="閉じる">✕</button>
-  <img id="lb-img" src="" alt="">
-  <p id="lb-cap"></p>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-(function(){
-  "use strict";
-  var PASSWORD = "20260719";
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var hasGsap = (typeof gsap !== 'undefined') && (typeof ScrollTrigger !== 'undefined');
-  var useAnim = hasGsap && !reduced;
-  if(useAnim){ gsap.registerPlugin(ScrollTrigger); }
+/* =========================================================
+   パスワード認証
+   ========================================================= */
+// ▼▼▼ パスワードをここに設定してください ▼▼▼
+const PASSWORD = "20260719";   // 例: const PASSWORD = "0708";
+// ▲▲▲ パスワードをここに設定してください ▲▲▲
 
-  function q(s){ return document.querySelector(s); }
-  function qa(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+const gate     = document.getElementById('gate');
+const content  = document.getElementById('content');
+const input    = document.getElementById('gate-input');
+const btn      = document.getElementById('gate-btn');
+const errorMsg = document.getElementById('gate-error');
 
-  /* ---------- 文字分割（見出し用） ---------- */
-  function splitChars(el){
-    var text = el.textContent;
-    el.setAttribute('aria-label', text);
-    el.textContent = '';
-    var frag = document.createDocumentFragment();
-    for(var i=0;i<text.length;i++){
-      var sp = document.createElement('span');
-      sp.className = 'ch';
-      sp.setAttribute('aria-hidden','true');
-      sp.textContent = text[i];
-      frag.appendChild(sp);
-    }
-    el.appendChild(frag);
-    return qa.call ? Array.prototype.slice.call(el.querySelectorAll('.ch')) : [];
-  }
-
-  /* ---------- password gate ---------- */
-  var gate = q('#gate');
-  var gateForm = q('#gateForm');
-  var gateInput = q('#gateInput');
-  var gateError = q('#gateError');
-  var gateCard = q('#gateCard');
-  var unlocked = false;
-
-  function unlock(){
-    if(unlocked) return;
-    unlocked = true;
-    gate.classList.add('open');
-    document.body.classList.remove('locked');
-    try{ sessionStorage.setItem('site-open','1'); }catch(e){}
-    var v = q('#heroVideo');
-    if(v){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
-    if(useAnim){ initAnims(); }
-  }
-
-  gateForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    if(gateInput.value === PASSWORD){
-      gateError.classList.remove('show');
-      unlock();
-    }else{
-      gateError.classList.add('show');
-      gateCard.classList.remove('shake');
-      void gateCard.offsetWidth;
-      gateCard.classList.add('shake');
-      gateInput.select();
-    }
-  });
-
-  /* ---------- GSAP 演出（未読込・reduced-motion時は静的表示のまま） ---------- */
-  var animsReady = false;
-  function initAnims(){
-    if(animsReady) return;
-    animsReady = true;
-
-    /* --- オープニングシーケンス ---
-       ※ 動画コンテナ(hv)は visibility を使わず opacity のみで隠す
-         （visibility:hidden はブラウザが動画を一時停止するため） */
-    var intro = gsap.timeline({defaults:{ease:'power3.out'}});
-    intro.set(qa('[data-in="line"]'), {yPercent:110});
-    intro.set(qa('[data-in="fade"]'), {autoAlpha:0, y:24});
-    intro.set('[data-in="rule"]', {scaleX:0});
-    intro.set('[data-in="hv"]', {opacity:0, y:40, scale:.96});
-    intro.to(qa('[data-in="line"]'), {yPercent:0, duration:1.2, stagger:.14, ease:'power4.out'}, .35)
-         .to(qa('[data-in="fade"]'), {autoAlpha:1, y:0, duration:1, stagger:.09}, .55)
-         .to('[data-in="rule"]', {scaleX:1, duration:.9, ease:'power2.inOut'}, 1.1)
-         .to('[data-in="hv"]', {opacity:1, y:0, scale:1, duration:1.3, ease:'power3.out'}, .7);
-    intro.eventCallback('onComplete', function(){
-      var v = q('#heroVideo');
-      if(v && v.paused){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
-    });
-
-    /* --- スクロール進捗バー --- */
-    gsap.to('#pbar', {scaleX:1, ease:'none',
-      scrollTrigger:{start:0, end:'max', scrub:.3}});
-
-    /* --- ヒーロー視差（出ていくとき） --- */
-    gsap.to('.hero-copy', {yPercent:-14, autoAlpha:.25, ease:'none',
-      scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}});
-    gsap.to('.hv', {yPercent:8, ease:'none',
-      scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}});
-
-    /* --- ゴーストタイポ視差 --- */
-    qa('.ghost').forEach(function(g){
-      var gx = parseFloat(g.getAttribute('data-gx') || '6');
-      gsap.fromTo(g, {xPercent:-50 - gx}, {xPercent:-50 + gx, ease:'none',
-        scrollTrigger:{trigger:g.parentElement, start:'top bottom', end:'bottom top', scrub:true}});
-    });
-    var fg = q('#ftGhost');
-    if(fg){
-      gsap.fromTo(fg, {xPercent:-56}, {xPercent:-44, ease:'none',
-        scrollTrigger:{trigger:'.footer', start:'top bottom', end:'bottom bottom', scrub:true}});
-    }
-
-    /* --- 見出し：1文字ずつ立ち上がる --- */
-    qa('.sec-jp.split').forEach(function(el){
-      splitChars(el);
-      var chs = el.querySelectorAll('.ch');
-      gsap.set(chs, {yPercent:112});
-      ScrollTrigger.create({
-        trigger:el, start:'top 88%', once:true,
-        onEnter:function(){
-          gsap.to(chs, {yPercent:0, duration:1, stagger:.045, ease:'power4.out'});
-        }
+function unlock(){
+  if(input.value === PASSWORD){
+    gate.style.transition = 'opacity .6s ease';
+    gate.style.opacity = '0';
+    setTimeout(function(){
+      gate.style.display = 'none';
+      content.style.display = 'block';
+      // 次のフレームでフェードイン
+      requestAnimationFrame(function(){
+        content.classList.add('visible');
+        initReveal();
       });
-    });
+    }, 600);
+  } else {
+    errorMsg.classList.add('show');
+    input.value = '';
+    input.focus();
+  }
+}
 
-    /* --- フッター Thank you --- */
-    var fts = q('.ft-script');
-    if(fts){
-      splitChars(fts);
-      var fchs = fts.querySelectorAll('.ch');
-      gsap.set(fchs, {yPercent:112});
-      ScrollTrigger.create({
-        trigger:fts, start:'top 88%', once:true,
-        onEnter:function(){
-          gsap.to(fchs, {yPercent:0, duration:1.1, stagger:.05, ease:'power4.out'});
-        }
-      });
-    }
+btn.addEventListener('click', unlock);
+input.addEventListener('keydown', function(e){
+  if(e.key === 'Enter') unlock();
+});
+window.addEventListener('load', function(){ input.focus(); });
 
-    /* --- 汎用フェードアップ --- */
-    var fups = qa('.fup');
-    gsap.set(fups, {autoAlpha:0, y:34});
-    ScrollTrigger.batch(fups, {
-      start:'top 92%', once:true,
-      onEnter:function(batch){
-        gsap.to(batch, {autoAlpha:1, y:0, duration:1, stagger:.09, ease:'power3.out'});
+/* =========================================================
+   スクロール出現アニメーション
+   ========================================================= */
+function initReveal(){
+  const items = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){
+    items.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
       }
     });
-
-    /* --- 写真カーテンリビール --- */
-    qa('.rvimg').forEach(function(fr){
-      var im = fr.querySelector('img');
-      var baseScale = 1;
-      /* 由貴子写真などトリミング用transformがある場合はスケール演出をスキップ */
-      var hasInline = im.style.transform && im.style.transform.length > 0;
-      gsap.set(fr, {clipPath:'inset(100% 0% 0% 0%)'});
-      if(!hasInline){ im.setAttribute('data-zoom','1'); gsap.set(im, {scale:1.22}); }
-      ScrollTrigger.create({
-        trigger:fr, start:'top 90%', once:true,
-        onEnter:function(){
-          gsap.to(fr, {clipPath:'inset(0% 0% 0% 0%)', duration:1.2, ease:'power4.out'});
-          if(!hasInline){ gsap.to(im, {scale:baseScale, duration:1.6, ease:'power3.out'}); }
-        }
-      });
-    });
-
-    /* --- メインビジュアル：スクロールで全幅に開く --- */
-    var mvClip = q('#mvClip');
-    if(mvClip){
-      gsap.fromTo(mvClip,
-        {clipPath:'inset(6% 10% 6% 10% round 12px)'},
-        {clipPath:'inset(0% 0% 0% 0% round 6px)', ease:'none',
-         scrollTrigger:{trigger:'.mainvisual', start:'top 85%', end:'top 25%', scrub:true}});
-      gsap.fromTo('#mvImg', {yPercent:-6, scale:1.12}, {yPercent:6, scale:1.02, ease:'none',
-        scrollTrigger:{trigger:'.mainvisual', start:'top bottom', end:'bottom top', scrub:true}});
-    }
-
-    /* --- タイムラインの線が伸びる --- */
-    var tlLine = q('#tlLine');
-    if(tlLine){
-      gsap.fromTo(tlLine, {scaleY:0}, {scaleY:1, ease:'none',
-        scrollTrigger:{trigger:'.tl', start:'top 80%', end:'bottom 60%', scrub:true}});
-    }
-
-    /* --- 横スクロールシアター --- */
-    var hs = q('#hs'), track = q('#hsTrack');
-    if(hs && track){
-      hs.classList.add('js-hs');
-      var getDist = function(){ return Math.max(0, track.scrollWidth - window.innerWidth); };
-      var trackTween = gsap.to(track, {
-        x:function(){ return -getDist(); },
-        ease:'none',
-        scrollTrigger:{
-          trigger:hs, start:'top top',
-          end:function(){ return '+=' + getDist(); },
-          scrub:1, pin:true, anticipatePin:1, invalidateOnRefresh:true
-        }
-      });
-      /* カードの奥行き感（横スクロール連動の内側視差） */
-      qa('.hs-card').forEach(function(c){
-        gsap.fromTo(c.querySelector('img'), {xPercent:-5}, {xPercent:5, ease:'none',
-          scrollTrigger:{trigger:c, containerAnimation:trackTween,
-            start:'left right', end:'right left', scrub:true}});
-      });
-    }
-
-    /* --- フォント読込後にレイアウト再計測 --- */
-    if(document.fonts && document.fonts.ready){
-      document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
-    }
-    window.addEventListener('load', function(){ ScrollTrigger.refresh(); });
-
-    /* ============================================================
-       保険レイヤー（過去バグ対策：rAF/トリガー非依存の setInterval）
-       ① 画面内なのに隠れたままの要素を強制表示
-       ② rAF停止環境を検知したら演出を全解除して静的表示に戻す
-       ============================================================ */
-    var lastTick = Date.now();
-    gsap.ticker.add(function(){ lastTick = Date.now(); });
-
-    function forceShow(el){
-      gsap.set(el, {clearProps:'opacity,visibility,clipPath,transform'});
-      Array.prototype.forEach.call(el.querySelectorAll('.ch'), function(c){
-        gsap.set(c, {clearProps:'transform'});
-      });
-      Array.prototype.forEach.call(el.querySelectorAll('img[data-zoom]'), function(im){
-        gsap.set(im, {clearProps:'transform'});
-      });
-    }
-    function isHidden(el){
-      var cs = getComputedStyle(el);
-      if(parseFloat(cs.opacity) < 0.05) return true;
-      if(cs.visibility === 'hidden') return true;
-      if(cs.clipPath && cs.clipPath.indexOf('100%') > -1) return true;
-      var ch = el.querySelector('.ch');
-      if(ch){
-        var t = getComputedStyle(ch).transform;
-        if(t && t !== 'none'){
-          var m = t.match(/matrix\(([^)]+)\)/);
-          if(m && parseFloat(m[1].split(',')[5]) > 4) return true;
-        }
-      }
-      return false;
-    }
-    var watchSel = '[data-in], .fup, .rvimg, .sec-jp.split, .ft-script';
-    var rafDeadHandled = false;
-    setInterval(function(){
-      if(document.body.classList.contains('locked')) return;
-
-      /* ② rAFが1.6秒以上止まっていたら演出エンジンごと解除 */
-      if(!rafDeadHandled && (Date.now() - lastTick) > 1600){
-        rafDeadHandled = true;
-        try{
-          intro.kill();
-          ScrollTrigger.getAll().forEach(function(t){ t.kill(true); });
-        }catch(e){}
-        qa(watchSel + ', .ghost, #pbar, #hsTrack, #mvClip, #mvImg, #tlLine').forEach(forceShow);
-        var hsEl = q('#hs');
-        if(hsEl){ hsEl.classList.remove('js-hs'); }
-        return;
-      }
-
-      /* ① 画面内で1秒以上隠れたままの要素を強制表示 */
-      var vh = window.innerHeight || document.documentElement.clientHeight;
-      qa(watchSel).forEach(function(el){
-        var r = el.getBoundingClientRect();
-        if(r.top < vh && r.bottom > 0 && isHidden(el)){
-          el.__miss = (el.__miss || 0) + 1;
-          if(el.__miss >= 2){ forceShow(el); }
-        }else{
-          el.__miss = 0;
-        }
-      });
-    }, 500);
-  }
-
-  /* セッション済みなら即時解錠 */
-  try{
-    if(sessionStorage.getItem('site-open') === '1'){ unlock(); }
-  }catch(e){}
-
-  /* ---------- lightbox ---------- */
-  var lb = q('#lb');
-  var lbImg = q('#lb-img');
-  var lbCap = q('#lb-cap');
-  var lbClose = q('#lb-close');
-
-  document.addEventListener('click', function(e){
-    var t = e.target.closest ? e.target.closest('.lb-open') : null;
-    if(!t) return;
-    lbImg.src = t.getAttribute('data-src');
-    lbCap.textContent = t.getAttribute('data-cap') || '';
-    lb.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  });
-  function closeLb(){
-    lb.classList.remove('show');
-    document.body.style.overflow = '';
-  }
-  lbClose.addEventListener('click', closeLb);
-  lb.addEventListener('click', function(e){ if(e.target === lb) closeLb(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLb(); });
-
-  /* ---------- video autoplay retry ----------
-     解錠後、再生されるまで setInterval と touch の両方でリトライ */
-  function retryVideo(){
-    if(!unlocked) return;
-    var v = q('#heroVideo');
-    if(v && v.paused){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
-  }
-  setInterval(retryVideo, 1200);
-  document.addEventListener('touchstart', retryVideo, {passive:true});
-  document.addEventListener('click', retryVideo, {passive:true});
-})();
+  }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+  items.forEach(function(el){ io.observe(el); });
+}
 </script>
+
 </body>
 </html>
